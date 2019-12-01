@@ -1,40 +1,29 @@
 
+- [minikube命令行](#minikube%e5%91%bd%e4%bb%a4%e8%a1%8c)
+  - [启动](#%e5%90%af%e5%8a%a8)
+  - [删delete](#%e5%88%a0delete)
+  - [缓冲cache](#%e7%bc%93%e5%86%b2cache)
+  - [配置](#%e9%85%8d%e7%bd%ae)
+  - [声明式配置](#%e5%a3%b0%e6%98%8e%e5%bc%8f%e9%85%8d%e7%bd%ae)
+- [kubectl](#kubectl)
+- [查看命令 kubectl](#%e6%9f%a5%e7%9c%8b%e5%91%bd%e4%bb%a4-kubectl)
+- [创建](#%e5%88%9b%e5%bb%ba)
+- [删 kubectl delete](#%e5%88%a0-kubectl-delete)
+- [kubectl](#kubectl-1)
+- [其他](#%e5%85%b6%e4%bb%96)
+- [更新](#%e6%9b%b4%e6%96%b0)
+  - [start](#start)
 
 
-# minikube命令
+
+
+# minikube命令行
+## 启动
 ```bash
 # 创建群集 也就是创建虚拟机
 minikube start
 # 创建第二个群集
 minikube start -p cluster2
-# 停止本地集群
-minikube stop
-```
-
-## 删 delete
-```bash
-# 删除本地集群
-minikube delete
-# 删除所有个人资料
-minikube delete --all
-# 删除个人资料和.minikube目录
-minikube delete --purge
-# 删除所有本地群集和配置文件
-minikube delete --purge --all
-```
-
-## 缓冲 cache
-```bash
-# 缓冲docker镜像
-minikube cache add ubuntu:16.04
-# 查看缓冲列表
-minikube cache list
-# 删除缓冲镜像
-minikube cache delete <image name>
-```
-
-## 开始 start
-```bash
 
 # 设置使用的虚拟驱动
 minikube start --vm-driver=hyperv 
@@ -54,6 +43,33 @@ minikube start --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com --image-re
 
 
 ```
+
+## 删delete
+```bash
+# 删除本地集群
+minikube delete
+# 删除所有个人资料
+minikube delete --all
+# 删除个人资料和.minikube目录
+minikube delete --purge
+# 删除所有本地群集和配置文件
+minikube delete --purge --all
+# 停止本地集群
+minikube stop
+
+```
+
+## 缓冲cache
+```bash
+# 缓冲docker镜像
+minikube cache add ubuntu:16.04
+# 查看缓冲列表
+minikube cache list
+# 删除缓冲镜像
+minikube cache delete <image name>
+```
+
+
 ## 配置
 ```bash
 # 设置默认使用的虚拟驱动
@@ -77,7 +93,9 @@ kubectl replace --save-config -f 123.yaml
 
 ```
 
-# 操作相关 kubectl
+
+
+# kubectl
 
 ```bash
 # 连接到容器中
@@ -174,6 +192,41 @@ kubectl delete po cq-78c488ccdf-zljp6
 
 
 
+# kubectl
+
+```bash
+# 查看资源列表和资源短写
+kubectl api-resources
+# 查看资源详细
+kubectl explain <po>
+
+# 查看详细信息
+kubectl describe <po>
+
+
+# 查看群集的详细信息及其运行状况
+kubectl cluster-info
+
+# 使用以下命令查看集群中的节点
+kubectl get nodes
+
+#创建容器 pod
+kubectl create deployment first-deployment --image=katacoda/docker-http-server
+# 暴露服务器 first-deployment
+# 开启80端口
+kubectl expose deployment first-deployment --port=80 --type=NodePort
+
+# 根据yaml规则创建容器？
+kubectl apply -f /opt/kubernetes-dashboard.yaml
+# 查看仪盘表启动进度
+# 查看kube-system名称空间中的Pod
+kubectl get pods -n kube-system  -w
+
+```
+
+
+
+
 # 其他
 1. eval $(minikube docker-env --shell bash)
 1. eval $(minikube docker-env --shell powershell)
@@ -228,3 +281,141 @@ docker安装报错
 1. 进入注册表编辑器：WIN+R，输入 regedit，回车
 1. 建议在以下操作前先备份注册表：文件->导出
 1. 找到 Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Docker for Windows 并删除
+
+
+```bash
+# 删除环境变量
+unset HTTPS_PROXY
+unset HTTP_PROXY
+```
+
+
+Unable to connect to the server: dial tcp 172.17.204.77:8443: connectex: No connection could be made because the target machine actively refused it.
+
+
+
+
+```bash
+# minikube
+设置默认驱动方式
+minikube config set vm-driver hyperv
+
+# 启用仪盘表 web管理页面
+minikube addons enable dashboard
+
+# 删除节点也就是虚拟机
+minikube delete
+```
+
+# 更新
+```bash
+# 更新pod副本数量
+kubectl scale -n default deployment cq --replicas=1
+```
+
+## start
+
+选项：`--kubernetes-version k8s版本`  
+用法：`--kubernetes-version v1.16.0`    
+作用：使用指定版本的k8b
+
+选项：`--vm-driver=<enter_driver_name>`  
+用法：`--vm-driver=hyperv`    
+作用：使用指定虚拟机
+
+```bash
+--vm-driver=hyperv          #指定虚拟驱动方式为微软的hyperv 
+--hyperv-virtual-switch     #hyperv虚拟交换机名称。默认为首次发现
+
+--network-plugin=cni \
+--enable-default-cni \
+--container-runtime=containerd \    # 指定底层容器
+--bootstrapper=kubeadm
+--network-plugin=cni \
+--enable-default-cni \
+--extra-config=kubelet.container-runtime=remote \
+--extra-config=kubelet.container-runtime-endpoint=unix:///run/containerd/containerd.sock \
+--extra-config=kubelet.image-service-endpoint=unix:///run/containerd/containerd.sock \
+--bootstrapper=kubeadm
+--wait=false                # 直到启动成功
+
+minikube start \
+--docker-env HTTP_PROXY=$HTTP_PROXY \
+--docker-env HTTPS_PROXY=$HTTPS_PROXY \
+--docker-env NO_PROXY=$NO_PROXY \
+--image-mirror-country cn \
+--vm-driver=hyperv
+
+
+# 国内用 有效
+minikube start --vm-driver=hyperv --registry-mirror https://im0hy9gl.mirror.aliyuncs.com --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
+
+
+minikube start --vm-driver=hyperv \
+--registry-mirror https://im0hy9gl.mirror.aliyuncs.com \
+--image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
+
+
+minikube start --vm-driver=hyperv `
+--registry-mirror https://im0hy9gl.mirror.aliyuncs.com `
+--image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
+
+
+
+
+
+
+
+
+
+minikube start \
+--image-mirror-country cn \
+--vm-driver=hyperv
+
+--registry-mirror https://im0hy9gl.mirror.aliyuncs.com
+
+--image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
+
+
+
+
+
+eval $(minikube docker-env)
+
+env | grep HTTP_PROXY
+
+```
+
+
+
+kubectl create deployment cq --image=coolq/wine-coolq 
+
+--port=9000:9000 --type
+-v `pwd`:/home/user/coolq 
+
+kubectl expose deployment cq --type=LoadBalancer --port=9000
+
+kubectl expose deployment cq --type=NodePort --port=9000
+
+kubectl delete svc cq
+
+```bash
+# 共享文件夹到虚拟机
+minikube mount /usr:/host
+
+minikube mount --ip=172.17.204.65 e:\\Git\\cq:/home/docker
+
+minikube ssh --native-ssh=false
+
+
+172.17.204.65
+172.17.204.77
+
+minikube mount $HOME:/host
+
+
+
+
+```
+
+

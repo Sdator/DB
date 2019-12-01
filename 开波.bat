@@ -9,3 +9,4 @@ code --user-data-dir %用户数据目录% .
 
 exit
 
+ --extensionHomePath %插件目录% 
