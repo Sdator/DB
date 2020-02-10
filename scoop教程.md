@@ -1,9 +1,9 @@
-# Scoop常用指令
+# Scoop入门帮助
 
-## `目录`
+## 目录
 
-- [Scoop常用指令](#scoop%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4)
-  - [`目录`](#%e7%9b%ae%e5%bd%95)
+- [Scoop入门帮助](#scoop%e5%85%a5%e9%97%a8%e5%b8%ae%e5%8a%a9)
+  - [目录](#%e7%9b%ae%e5%bd%95)
   - [系统要求](#%e7%b3%bb%e7%bb%9f%e8%a6%81%e6%b1%82)
   - [简介](#%e7%ae%80%e4%bb%8b)
   - [Scoop安装](#scoop%e5%ae%89%e8%a3%85)
