@@ -1,5 +1,20 @@
 # Scoop常用指令
 
+## `目录`
+
+- [Scoop常用指令](#scoop%e5%b8%b8%e7%94%a8%e6%8c%87%e4%bb%a4)
+  - [`目录`](#%e7%9b%ae%e5%bd%95)
+  - [系统要求](#%e7%b3%bb%e7%bb%9f%e8%a6%81%e6%b1%82)
+  - [简介](#%e7%ae%80%e4%bb%8b)
+  - [Scoop安装](#scoop%e5%ae%89%e8%a3%85)
+  - [程序安装到自定义目录](#%e7%a8%8b%e5%ba%8f%e5%ae%89%e8%a3%85%e5%88%b0%e8%87%aa%e5%ae%9a%e4%b9%89%e7%9b%ae%e5%bd%95)
+  - [小提示](#%e5%b0%8f%e6%8f%90%e7%a4%ba)
+  - [常用命令](#%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4)
+
+>*`2019/2/10 PM By：Air`*
+
+
+
 ## 系统要求
 * Windows 7 SP1 + / Windows Server 2008 +
 * PowerShell 5 + / .NET Framework 4.5 +
@@ -106,3 +121,4 @@ $env:SCOOP_GLOBAL='F:\GlobalScoopApps'
       - scoop cleanup * -g -k
 
 > 参数可自由组合使用
+
