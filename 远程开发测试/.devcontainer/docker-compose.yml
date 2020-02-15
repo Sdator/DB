@@ -1,0 +1,20 @@
+version: "3"
+services:
+  test:
+    container_name: test
+    image: busybox
+    working_dir: /workspace
+    # environment: 
+      # SHELL: /bin/sh
+    volumes:
+      - .:/workspace
+    # tty: true
+    command: sleep infinity
+    # - /bin/sh
+    # - -c
+    # - |
+    #   ll /etc/selinux
+    #   echo -e "\n"
+    #   pwd
+    #   echo -e "\n"
+    #   env

@@ -1,4 +1,4 @@
-
+﻿
 # Git学习
 
 - [Git学习](#git%e5%ad%a6%e4%b9%a0)
@@ -182,4 +182,11 @@ git remote add web https://gitee.com/sdator/sdator.git
 
 	复制公钥(id_rsa.pub)文件中的内容到git
 	clip < ~/.ssh/id_rsa.pub
+
+查看日志
+	-S 显示添加或移除了某个关键字的提交、图形表示、一行显示、显示新增、修改、删除的文件清单
+	git log -S py  --graph --pretty=oneline  --name-status
+
+
+
 

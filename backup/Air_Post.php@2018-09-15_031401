@@ -1,0 +1,121 @@
+<?php
+namespace Lib\Air;
+
+
+
+function console_log($data)
+{
+	if (is_array($data) || is_object($data))
+	{
+		echo("<script>console.log('".json_encode($data)."');</script>");
+	}
+	else
+	{
+		echo("<script>console.log('".$data."');</script>");
+	}
+	
+	
+
+}
+
+
+class 表单提交
+{
+
+	private $请求地址;									//必填
+	private $POST数据,$请求头,$请求配置,$设置代理;		//可选或自定义
+	private $返回数据,$cookie;							//用作返回
+			
+			
+	//字段属性 用作获取/设置
+	function __set($n,$v) { $this->$n = $v;		}
+	function __get($name) { return $this->$name;}		
+				
+	//构造函数 初始运行
+	function __construct()
+	{  
+		$this->请求头 = array
+		(
+			'User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+		);	
+	}  
+	
+	function test(){
+		echo '12313131';
+	}
+
+	
+	
+	//My方法
+	function 网页请求($是否设置cookie=false,$是否清空cookie=false)
+	{		
+		//错误处理
+		if($this->请求地址==''){
+			echo '对象初始化失败，请求地址不能为空';
+			return;
+		}		
+				
+		$this->请求配置[CURLOPT_URL] 			= $this->请求地址;	//设置请求地址
+		$this->请求配置[CURLOPT_HTTPHEADER]		= $this->请求头;	//加入自定义请求报头	
+		$this->请求配置[CURLOPT_FRESH_CONNECT]	= true;				//每次都从服务器读取 而不是从缓存读取	
+		$this->请求配置[CURLOPT_RETURNTRANSFER]	= true;				//以字节集模式返回 否则直接输出屏幕
+		
+		//$this->请求配置[CURLOPT_HEADER] = true;					//返回请求报头		调试用
+		//$this->请求配置[CURLOPT_NOBODY] = true;					//不输出body部分 	调试用
+	
+		if($this->设置代理){
+			//curl_setopt($ch, CURLOPT_PROXYUSERPWD, ":"); //http代理认证帐号，username:password的格式
+			$this->请求配置[CURLOPT_PROXYAUTH] = CURLAUTH_BASIC;	//代理认证模式
+			$this->请求配置[CURLOPT_PROXY] = "127.0.0.1";			//代理服务器地址
+			$this->请求配置[CURLOPT_PROXYPORT] = 9050;				//代理服务器端口
+			$this->请求配置[CURLOPT_PROXYTYPE] = CURLPROXY_HTTP;	//使用http代理模式
+		}
+		
+		
+		//post请求配置
+		if($this->POST数据){
+			$this->请求配置[CURLOPT_POST] = true;						//设置post方式提交
+			$this->请求配置[CURLOPT_POSTFIELDS] = $this->POST数据;		//post数据
+		}
+				
+		//临时目录创建COOKIE文件 用于保存读取cookie
+		if($是否设置cookie){
+			$this->cookie = tempnam('./cookie','cok');					//创建唯一临时文件
+			//$this->cookie=取域名($this->请求地址);
+			//为网站创建空白cookie文件 待用
+			//file_put_contents($this->cookie,'');						//写出文件
+			$this->请求配置[CURLOPT_COOKIEJAR]  = $this->cookie;		//保存cookie到文件中
+			//$this->请求配置[CURLOPT_COOKIEFILE] = $this->cookie;		//读取cookie
+		}
+		
+		//初始化curl
+		$ch = curl_init(); 
+	
+		//发送请求
+		curl_setopt_array($ch, $this->请求配置);	//设置访问信息组
+		$this->返回数据 = curl_exec($ch);			//发送请求 取回结果
+		
+		//检测最后一次操作的错误信息
+		if(curl_errno($ch))
+		{
+			echo '<br>错误代码：'. curl_error($ch).'<br>';		
+		}
+		
+		//清理cookie文件
+		if($是否清空cookie)unlink($cookie_jar);	
+		
+		//关闭会话 返回数据
+		curl_close($ch); 
+		
+	}
+}
+
+
+
+?>
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+{
+	"name": "test",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "test",
+	// "settings": { 
+	// 	"terminal.integrated.shell.linux": "/bin/sh"
+	// }
+	// Comment out next line to run as root
+	// "remoteUser": "vscode",
+
+}

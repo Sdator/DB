@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<?php
+
+$a=NULL;
+/*
+	htmlspecialchars		处理特殊字符  防止js html代码 入侵注入 
+		防止跨站点脚本（XSS） 	一般配合自身页面处理表单的时候使用
+		例如 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+	$_SERVER["PHP_SELF"]		返回当前执行脚本的文件名
+	$_SERVER["REQUEST_METHOD"]	返回提交方式
+*/
+
+
+$name = $pas= $email = $gender = $comment = $website = "";
+
+//var_dump($_POST);
+
+
+//检测表单提交方式
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$name = test_input($_POST["name"]);
+	$pas = test_input($_POST["pas"]);
+	//$email = test_input($_POST["email"]);
+	//$website = test_input($_POST["website"]);
+	//$comment = test_input($_POST["comment"]);
+	//$gender = test_input($_POST["gender"]);
+	
+	//empty		检测字符串是否为空
+	
+	if(empty($name) and empty($pas)){
+		
+		echo "你输入的账号或密码不能为空。";
+	}else {
+		echo "你的账号:", $name;
+		echo "<br>";
+		echo "你的密码:", $pas;
+	}
+	
+	
+} 
+
+
+
+
+
+//表单安全处理
+function test_input($data) {
+  $data = trim($data);				//去除特殊符号 空格 制表 换行
+  $data = stripslashes($data);		//去掉反斜杠
+  $data = htmlspecialchars($data);	//转换特殊符号
+  return $data;
+}
+
+
+
+
+/*
+全局变量信息
+array(8) 
+{ 
+	["GLOBALS"]=> *RECURSION* 
+	["_POST"]=> array(0) { } 
+	["_GET"]=> array(0) { } 
+	["_COOKIE"]=> array(0) { } 
+	["_FILES"]=> array(0) { } 
+
+	["a"]=> string(9) "你大爷abc" 
+
+	["b"]=> array(3) 
+		{ 
+		[0]=> string(1) "a" 
+		[1]=> string(1) "b" 
+		[2]=> string(1) "c" 
+		} 
+	["c"]=> int(7) 
+}
+
+
+
+
+
+
+
+例子
+	字符串  字符串中适当给变量添加大括号可防止出错
+		echo "This", " string", " was", " made", " with multiple parameters.";
+		$a = "Hello";
+		$b = $a . " world!";
+		echo $b; // 输出 Hello world!
+	数组创建
+		1索引数组
+			$cars=array("a","b","c");
+			$cars[0]="a";
+			$cars[1]="b";
+			$cars[2]="c";
+			
+			遍历
+			for($x=0;$x<$arrlength;$x++) {
+			  echo $cars[$x];
+			  echo "<br>";
+			}
+			
+		2关联数组
+			$age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
+			$age['Peter']="35";
+			$age['Ben']="37";
+			$age['Joe']="43";
+			
+			遍历
+			foreach($age as $x=>$x_value) {
+			  echo "Key=" . $x . ", Value=" . $x_value;
+			  echo "<br>";
+			}
+					
+		
+
+基本语法
+	关键字
+		static			局部静态变量
+		
+		$GLOBALS['变量名']	函数内读取全局变量
+		global 变量定义		函数内读取全局变量
+		{$cars[0]}			读取数组中第一个下标
+		$cars=array("Volvo","BMW","SAAB");		定义数组一共有3个下标
+		
+		$常量名  			变量定义符号$
+		_常量名				常量定义 下划线开头	 默认全局
+		class 类名{}		类定义
+		var 变量名			类内定义变量
+		return				返回
+		NULL				清空变量	如 $x=null;
+		function 函数名		函数定义
+		function setHeight($minheight=50)	参数为空的情况下 自动选择默认参数
+		
+		
+		
+	数据类型
+		字符串		
+			使用“”或‘’概括				
+			双引号或单引号
+			字符串连接 $a=$a.="123"; 	$b=$a."123"; 
+		
+		整数		没有小数点的整数	0x** 16进制 0**8进制 
+		
+	
+		逻辑型		true 或 false。
+		
+		递增/递减运算符
+			++	递增
+			--	递减
+		
+		运算符
+			===			变量类型完全相等
+			==			变量值相等
+			!=或<>      不等于
+			!==			不全等	检查值和类型
+			>			大于
+			<			小于
+			>=			大于等于
+			=<			小于等于
+			
+		逻辑运算
+			and			与
+			or			或
+			xor			异或
+			&&			与
+			||			或
+			！			非
+		
+	须知	
+		语句结束后要加分号;
+		函数大小写不敏感
+		变量大小写敏感
+		数据类型松散
+		正常情况下全局变量只能在函数外使用，函数内使用需要添加关键字global或$GLOBALS['*']
+		局部变量只能在函数内使用，当函数返回变量清空，可使用关键字static保留变量
+		符串中首字符的位置是 0 而不是 1
+		
+		
+		
+
+常用函数
+	echo			调试输出		快	能够输出一个以上的字符串
+	print			调试输出		慢	只能输出一个字符串，并始终返回 1
+
+	var_dump(变量) 					返回数据类型和值
+	print_vars(对象)				输出对象 的值		
+	strlen(字符串)					取文本长度
+	strpos(源字符串,待搜索字符串)	文本搜索 未找到返回假
+	define(名称,值,[是否大小写敏感])  常量定义
+	
+	count				取数组长度
+	
+	
+	
+类例子
+	
+<?php
+//创建类
+class Car
+{
+    var $color;
+	//构造函数 用于初始化的 时候赋值
+    function Car($color="green") {
+      $this->color = $color;	//初始化color变量的值
+    }							//$this-> 取类自身中的 变量
+	
+    function what_color() {
+      return $this->color;
+    }
+}
+
+function print_vars($obj) {
+   foreach (get_object_vars($obj) as $prop => $val) {
+     echo "\t$prop = $val\n";
+   }
+}
+
+	//创建对象
+	$herbie = new Car("white");
+
+	// show herbie properties
+	echo "\herbie: Properties\n";
+	print_vars($herbie);
+
+
+?> 
+	
+	
+	
+	
+	
+	
+*/
+
+
+
+
+
+
+?>
+
+
+</body>
+</html>

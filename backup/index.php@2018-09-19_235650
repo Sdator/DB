@@ -1,0 +1,141 @@
+<form method="post">
+	<input name="url" size="50" />
+	<input name="submit" type="submit" />
+</form>
+<?php
+
+
+//回调函数
+//如果想让 CUrl 继续下载后续内容，那么回调函数应该返回 header 字符串的长度
+function 响应头($ch, $头){
+	//echo "A----";
+	//var_dump($头);
+	//echo "<br />\r\n";
+	
+	$length = strlen($头);
+	return $length;
+
+}
+
+
+function 请求头($ch,$请求头){
+
+	//echo "B----";
+	//var_dump("$请求头");
+	//echo "<br />\r\n";
+	$length = strlen($请求头);
+    return $length;
+}
+
+
+
+
+function 下载($地址,$下载路径=""){
+//1、创建本地镜像文件
+$文件名		=	basename($地址);
+$当前目录	=	dirname(__FILE__);
+$下载路径	=	$当前目录."/下载目录/";
+
+//1.1 路径存在中文需要把utf8编码转换成gbk的
+$下载路径 = iconv("utf-8","gb2312//IGNORE",$下载路径);
+
+//1.2创建目录  如果目录不存在才创建
+!is_dir($下载路径) && @mkdir($下载路径,0755,true);
+
+//1.3创建文件镜像
+$文件句柄 = fopen($下载路径.$文件名, "w");
+
+
+//1.4写入文件
+fwrite($文件句柄,"1",length)
+
+
+
+
+//1x关闭文件
+fclose($文件句柄);
+
+
+
+/*
+
+// 当前位置
+ftell($file);
+// 改变当前位置
+fseek($file,"15");
+
+*/
+
+
+echo '<br>';
+
+}
+
+
+
+
+下载('http://www.baidu.com/f.jpg');
+
+
+
+
+//---设置默认请求头
+//设置编码方式
+header("Content-Type: text/html; charset=utf-8");
+
+//1.初始化，创建一个新cURL资源
+$ch = curl_init();
+
+
+//2.设置URL和相应的选项
+//$地址 = "https://assets-defrag-gl.gree.net/assets/tc/1/10/19/./552779e6abebba9447ceceda6462e3a0.zip";
+$地址 = "http://dldir1.qq.com/qqfile/qq/QQ8.9.2/20760/QQ8.9.2.exe";
+
+$缓存区大小 = 200000;
+
+$请求配置 = array( 
+	CURLOPT_HEADER			=>		0,			//输出相响应头
+	CURLOPT_RETURNTRANSFER	=>		1,			//以源数据返回  不显示内容到页面
+	CURLOPT_NOBODY			=> 		1,			//不输入页面内容
+	CURLOPT_SSL_VERIFYPEER	=>		FALSE,		//规避ssl的证书检查 对于https链接
+	CURLOPT_URL			 	=>		$地址,
+	CURLOPT_BUFFERSIZE		=>		$缓存区大小,
+	CURLOPT_WRITEFUNCTION	=>		"响应头",		//回调函数 自行处理响应头信息
+	CURLOPT_HEADERFUNCTION	=>		"请求头",		//回调函数 自行处理请求头信息
+);
+
+curl_setopt_array($ch, $请求配置);
+
+
+//3.抓取URL并把它传递给浏览器
+$源码=curl_exec($ch);
+
+if($error = curl_errno($ch))
+{
+	echo "错误代码:$error<br />\n";
+	
+}else{
+	echo '66行---';
+	echo '输出信息:<br >';
+	$info = curl_getinfo($ch);
+	//echo $info["upload_content_length"];
+	//var_dump($info);
+	//echo 'Took ' . $info['total_time'] . ' seconds to send a request to ' . $info['url'];
+}
+
+
+
+
+ 
+//4.关闭cURL资源，并且释放系统资源
+curl_close($ch);
+
+
+
+echo '你大爷';
+
+echo $源码;
+
+
+?>
+
