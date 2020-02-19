@@ -2,7 +2,7 @@
     // 终端渲染方式 有dom和画板  画板采用gpu性能更高
     "terminal.integrated.rendererType": "canvas",
     // 默认终端
-    "terminal.integrated.shell.windows": "D:\\Apps\\scoop\\apps\\git\\current\\bin\\bash.exe",
+    "terminal.integrated.shell.windows": "C:\\ScoopApp\\git\\current\\bin\\bash.exe",
     // 终端默认打开路径 默认为当前工作目录
     // "terminal.integrated.cwd": "${workspaceRoot}"
 }
