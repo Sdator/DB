@@ -183,6 +183,12 @@ git remote add web https://gitee.com/sdator/sdator.git
 	复制公钥(id_rsa.pub)文件中的内容到git
 	clip < ~/.ssh/id_rsa.pub
 
+	把本地密钥安装到服务器
+	ssh-copy-id -i ~/.ssh/id_rsa.pub user@server
+	ssh-copy-id -i ~/.ssh/git.pub root@34.92.230.171
+	ssh-copy-id -i ~/.ssh/id_rsa.pub opc
+
+
 查看日志
 	-S 显示添加或移除了某个关键字的提交、图形表示、一行显示、显示新增、修改、删除的文件清单
 	git log -S py  --graph --pretty=oneline  --name-status
