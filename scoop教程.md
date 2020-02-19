@@ -10,7 +10,7 @@
   - [自定义包安装目录](#%e8%87%aa%e5%ae%9a%e4%b9%89%e5%8c%85%e5%ae%89%e8%a3%85%e7%9b%ae%e5%bd%95)
   - [小提示](#%e5%b0%8f%e6%8f%90%e7%a4%ba)
   - [常用命令](#%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4)
-- [例子](#%e4%be%8b%e5%ad%90)
+  - [例子](#%e4%be%8b%e5%ad%90)
 
 >*`2019/2/10 PM By：Air`*
 
@@ -128,7 +128,7 @@ $env:SCOOP_GLOBAL='D:\GlobalScoopApps'
 
 > 参数可自由组合使用
 
-# 例子
+## 例子
 ```bash
 # 安装7z
 scoop install 7zip
