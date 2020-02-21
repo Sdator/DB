@@ -53,7 +53,7 @@ $env:SCOOP_GLOBAL='D:\GlobalScoopApps'
 ## 小提示
 
 > 部分 `AppName` 可用通配符 `*` 代替 如：  
-> scoop cache app * 表示清理所有缓存  
+> scoop cache rm * 表示清理所有缓存  
 > scoop update * 表示升级全部软件  
 
 > 安装安装不带参数，全局安装带参数-g 如:
