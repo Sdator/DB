@@ -8,9 +8,10 @@
   - [简介](#%e7%ae%80%e4%bb%8b)
   - [Scoop安装](#scoop%e5%ae%89%e8%a3%85)
   - [自定义包安装目录](#%e8%87%aa%e5%ae%9a%e4%b9%89%e5%8c%85%e5%ae%89%e8%a3%85%e7%9b%ae%e5%bd%95)
-  - [小提示](#%e5%b0%8f%e6%8f%90%e7%a4%ba)
+  - [门槛](#%e9%97%a8%e6%a7%9b)
   - [常用命令](#%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4)
   - [例子](#%e4%be%8b%e5%ad%90)
+  - [小提示](#%e5%b0%8f%e6%8f%90%e7%a4%ba)
 
 >*`2019/2/10 PM By：Air`*
 
@@ -50,14 +51,24 @@ $env:SCOOP_GLOBAL='D:\GlobalScoopApps'
 [Environment]::SetEnvironmentVariable('SCOOP_GLOBAL', $env:SCOOP_GLOBAL, 'Machine')
 ```
 
-## 小提示
+## 门槛
++ 安装 aria2 多线程下载
++ 设置代理
 
-> 部分 `AppName` 可用通配符 `*` 代替 如：  
-> scoop cache rm * 表示清理所有缓存  
-> scoop update * 表示升级全部软件  
+```bash
+# 安装aria2
+scoop install aria2
+# 启用aria2 默认是开启的
+scoop config aria2-enabled true
+# 修改最大连接数 默认是 5 视机器配置网速而定
+# 参数设置过太会堵塞网络，同时网站也有可能会封 IP 或阻断连接
+scoop config aria2-max-connection-per-server 50
 
-> 安装安装不带参数，全局安装带参数-g 如:
-> scoop install -g vscode
+# 代理设置 建议采用http协议 但无需填写协议前缀 
+scoop config proxy proxy.example.org:8080
+scoop config proxy 127.0.0.1:8080
+scoop config proxy localhost:8080
+```
 
 
 ## 常用命令
@@ -151,3 +162,13 @@ scoop update -g python
 scoop cleanup * -g -k
 
 ```
+
+
+## 小提示
+
+> 部分 `AppName` 可用通配符 `*` 代替 如：  
+> scoop cache rm * 表示清理所有缓存  
+> scoop update * 表示升级全部软件  
+
+> 安装安装不带参数，全局安装带参数-g 如:
+> scoop install -g vscode
