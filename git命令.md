@@ -21,7 +21,7 @@
 git config --global http.proxy 127.0.0.1:10086
 
 # 局部代理 仓库内执行
-git config --local http.proxy 127.0.0.1:1087
+git config --local http.proxy 127.0.0.1:1088
 ```
 
 # 查询代理状态
