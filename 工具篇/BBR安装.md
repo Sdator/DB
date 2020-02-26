@@ -4,7 +4,8 @@
 + linux 内核版本 4.9+
 
 ## 安装BBR
-+ Debian 9+
++ Debian 9+ 可直接执行开启
++ CentOS 先升级内核版本后再执行
 ```bash
 # 开启 BBR  Debian、ContOS亲测
 echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
