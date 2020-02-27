@@ -18,6 +18,7 @@
 	- [配置](#%e9%85%8d%e7%bd%ae)
 	- [日志](#%e6%97%a5%e5%bf%97)
 
+> 2018. AM By：Air
 
 
 # 设置代理
@@ -31,7 +32,7 @@ git config --global http.proxy http://localhost:10000/
 git config --global https.proxy http://localhost:10000/
 
 # 局部代理 仓库内执行
-git config --local http.proxy 127.0.0.1:1087
+git config --local http.proxy 127.0.0.1:1088
 ```
 
 

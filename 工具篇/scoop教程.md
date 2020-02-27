@@ -119,9 +119,11 @@ scoop config proxy localhost:8080
    - 查看缓存
         - scoop cache
     - 清理所有
-        - scoop cache app *
+        - scoop cache rm *
     - 清理指定app
-        - scoop cache app `[AppName]`
+        - scoop cache rm `[AppName]`
+    - 查看指定app
+        - scoop cache show `[AppName]`
  
 8. 旧版本清理
    - 使用说明
