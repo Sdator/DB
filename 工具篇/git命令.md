@@ -208,6 +208,7 @@ git remote add web https://gitee.com/sdator/sdator.git
 
 	添加私钥到ssh中
 	ssh-add ~/.ssh/id_rsa
+	ssh-add ~/.ssh/git
 
 	复制公钥(id_rsa.pub)文件中的内容到git
 	clip < ~/.ssh/id_rsa.pub
