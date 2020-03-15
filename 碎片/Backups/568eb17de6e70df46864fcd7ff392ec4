@@ -1,0 +1,247 @@
+untitled:Untitled-7
+
+寄存器
+ESP     指向堆栈最顶端的地址  栈顶
+EIP     非常重要的寄存器，它指向当前将要执行的指令  cpu执行指针?
+
+32位寄存器                      E?X     EAX EBX ECX EDX
+    EAX
+       
+    16位寄存器            
+        AX  低16位  ?X      AX BX CX DX     
+    八位寄存器
+        AH  高8位   ?H      AH BH CH DH
+        AL  低8位   ?L
+
+
+标志位
+    O 标志（溢出标志）          数值溢出设置1
+    P 标志（奇偶标志）          二进制前八位中为1的值的数量总数 奇数设置0   偶数设置1
+    Z 标志（零标志）            如果结果为0 设置为1    ffffffff(即是-1)+1=0   
+    S 标志（符号标志）          运算结果为负时设置为 1
+    A 标志（辅助进位标志）       F+1=10     需要进位操作标志会被设置为1
+    C 标志 进位标志             (ffffffff+1) / 结果为负数的时候
+
+
+
+存取指令
+    push    压栈
+        寻址方式
+            直接寻址    push 0      push eax
+            间接寻址    push [401000]           把地址401000中的值存入堆栈
+    pop     出栈
+
+    PUSHAD把所有通用寄存器的内容按一定顺序压入到堆栈中
+        相当于’PUSH EAX,PUSH ECX,PUSH EDX,PUSH EBX,PUSH ESP,PUSH EBP,PUSH ESI, PUSH EDI’
+    POPAD 与PUSHAD相反
+        相当于“POP EDI,POP ESI,POP ESP,POP ESP,POP EBX,POP EDX,POP ECX,POP EAX”。
+
+    以下是十六位的整体出入栈
+        PUSHA 等价于 'PUSH AX, CX, DX, BX, SP, BP,         SI, DI'。
+        POPA 等价于 'pop DI, SI, BP, SP, BX, DX, CX,         AX'。
+
+    mov eax,[401000]    获取地址401000的值存进eax       32位
+    mov ax,[401000]     获取地址401000的值存进ax        16位 值得前两字节
+    MOV EAX,[EBX+4]     获取地址EBX+4的值存进eax
+
+    MOVSX (带符号扩展的传送指令)
+    MOVSX eax,bx        取16位寄存器得数存器另一个32位寄存器，mov无法执行这个操作
+        如果第二个操作数bx为正数，那么高16位会用0填充，如果是负数则会用ffff填充
+       十六位数中
+        0-7fff          正数
+        8000-ffff       负数
+    MOVZX (带0扩展的传送指令)
+        和上面得类似只是剩余的部分总是被填充为0
+
+    LEA (取地址指令)
+        可用于计算地址
+        lea eax,[ebx+100]           把ebx的值加100存进eax中
+
+    XCHG (交换 寄存器/内存单元 和 寄存器) 
+        XCHG EAX,ECX        //互换两个寄存器的值
+    
+运算指令 
+    INC和DEC (递增和递减)
+
+    ADD (加法运算)       A 进位标志在有进位操作时不会改变
+        ADD EAX,1       //等价于INC EAX     eax的值+1保存到eax中
+
+    ADC(带进位的加法)    
+        A 进位标志会根据结果是否需要进位而发生改变
+        得到的结果会加上 C标志位的值  也就是结果可能会+1 或 +0
+        
+    SUB 减法运算和add相反
+        SUB EAX, ECX
+        即EAX-ECX的值保存到EAX中。
+    SBB 和ADC相反
+
+    MUL(无符号数的乘法)
+        MUL ECX             //这里是无符号数EAX,ECX相乘,结果存放到EDX:EAX中。
+        由于是无符号乘法得到的可值大于32位，由于寄存器是32位的超出部分会用另外一个寄存器edx保存高32位
+
+    IMUL(有符号数的乘法)
+        IMUL还允许使用多个操作数,这是与MUL不同的地方
+        如果寄存器容纳不下结果,其余的部分将被丢弃
+        IMUL EBX                                    EAX x EBX -> EDX:EAX            exa和ebx相乘保存进EDX:EAX 中
+        IMUL EBP, DWORD PTR [ESI+74],FF800002       [ESI+74] x FF800002 -> EBP      两个数相乘存进ebp中
+        
+    DIV(无符号除法)/IDIV(有符号除法) 
+        这两个指令反别与MUL和IMUL相反
+
+    XADD(交换并相加)
+        这个指令其实就是XCHG和ADD两个简单指令的组合
+        XADD EAX,ECX
+        等同
+        xchg eax,ebx
+        add eax,ebx
+    NEG 将操作数的符号取反      类似位取反 但只是改变符号
+        0 = 0
+        1 = ffffffff
+
+逻辑指令
+    AND  x,y     位与
+    OR   x,y     位或
+    XOR  x,y     异或       相同时为0   不同为1
+    NOT  x       位取反
+        0 = ffffffff
+        1 = fffffffe
+
+条件指令
+    CMP     比较两个数如果相等 设置 z标志位 为1    也就是两个数相减的结果如果是0就设置标志位
+            根据标志的值来决定跳转还是不跳转。最简单的例子就是配合JZ指令，如果Z标志被置为1，就跳转，否则，就不跳转。
+            类似 
+            let x=a-b
+            if(x==0)...
+
+
+    TEST    类似cmp会改变 SF,ZF,PF等标志位
+            不同的是test的两个操作数值进行 位与 操作，如果两个数相同的情况下得到的结果永远是1， z零标志位不会发生改变
+            let x=a&b
+            if(x==0)...
+
+跳转指令(原理是根据标志位的结果来进行相关操作)
+    JMP – 无条件跳转
+    JE, JZ – 结果为零则跳转                     Z 标志（零标志）为1时
+    JNE, JNZ – 结果不为零则跳转                 Z 标志（零标志）为0时
+    JP, JPE – 结果中1的个数为偶数则跳转          P 标志（奇偶标志） 为1时
+    JNP, JNPE – 结果为1的个数为奇数则跳转        P 标志（奇偶标志） 为0时
+    JO – 结果溢出了则跳转                       O 标志（溢出标志） 为1时
+    JNO – 结果没有溢出则跳转                    O 标志（奇偶标志） 为0时
+
+根据 C 标志（进位标志） (无符号数)
+   
+        C标志为1时跳转(结果为负数)
+            JB, JNAE – 小于则跳转                
+            JBE, JNA – 小于等于则跳转          判断C和Z两个标志         好像没有这个问题 (虽然会判断C和Z两个标志位但实际测试只要一个C标志位成立就会发生跳转)
+        
+        C标志为0时跳转(结果为正数)
+            JNB, JAE – 大于等于则跳转          判断C和Z两个标志 
+            JNBE, JA – 大于则跳转
+
+根据 S 标志（符号标志）(有符号数)
+       
+        S标志为1时跳转 (结果为负数)
+            JS – 结果为负则跳转
+            JL, JNGE –  小于则跳转               
+            JLE, JNG – 小于等于则跳转       判断S和Z两个标志            这里有问题 (虽然会判断C和Z两个标志位但实际测试只要一个C标志位成立就会发生跳转)
+       
+        S标志为0时跳转 (结果为正数)
+            JNS – 结果不为负则跳转
+            JNL, JGE – 大于等于则跳转            
+            JNLE, JG – 大于则跳转
+
+
+循环指令     
+    计次循环  loop  需要实用ecx寄存器作递减参数
+    方法1：
+            xor ecx,ecx     //清零ecx寄存器
+            mov ecx,15      //循环15次
+        :next 
+            ...             //循环体 写你的代码
+            LOOP next       //LOOP效率低  但能减少几条代码
+        
+    方法2：   
+        循环参数初始化
+            xor ecx,ecx     //清零ecx寄存器
+            mov ecx,15      //循环15次
+        :next    
+            dec ecx         //递减 ecx每次减1
+            ...             //循环体 写你的代码
+            test ecx,ecx    //判断ecx是否为0    也就是ecx & ecx   进行位与只有ecx的值为0的情况 就会设置z标志
+            jnz next        //跳转到循环头
+
+
+        LOOPZ, LOOPE        重复循环,直到零标志位Z置1
+        LOOPNZ, LOOPNE      重复循环,直到零标志位Z清0
+
+
+    MOVS/MOVSD 内存地址对拷
+        拷贝的方向取决于方向标志位D
+        该指令是从一个地址向另一个地址复制数据。源地址保存在ESI寄存器中,目的地址保存在EDI寄存器中
+        mov esi,40366c
+        mov edi,40369c
+        MOVS DWORD PTR ES:[EDI], DWORD PTR DS:[ESI]
+    MOVSW      拷贝2个字节
+    MOVSB      拷贝1个字节
+
+    LODS 该指令从源地址(ESI)拷贝数据到EAX寄存器中。
+        LODS DWORD PTR DS:[ESI]     
+        能使用前缀REP LODS
+    LODSW   拷贝2个字节到eax寄存器中
+    LODSB   拷贝1个字节到eax寄存器中
+
+
+
+前缀指令
+    REP 前缀指令配合movs可以循环复制一大片数据
+        mov ecx,4       //需要配合ecx寄存器使用每次拷贝的数据等于ecx*每次拷贝的大小
+        rep MOVS DWORD PTR ES:[EDI],DWORD PTR DS:[ESI]
+    此外,REP前缀还可以衍生出REPE/REPZ和REPNE/REPNZ指令,这个时候我们就需要考虑零标志位Z了。但是REPE/REPZ或者REPNZ/REPNE连同MOVS指令一起使用就没有太大意义了
+
+
+
+CMPS    内存对比
+    该指令比较ESI和EDI指向内存单元的内容。
+    该指令执行的是算数减法运算,这里,差值为0,所以零标志位Z将置1。
+    可以配合REPE/REPZ前缀指令使用,直到计数器ECX的值为0或者零标志位清0。     前缀的作用也就是可以让你根据不同的标志位来决定是否中止拷贝
+    CMPS DWORD PTR [ESI],DWORD PTR [EDI]
+
+
+cmp比较 
+    不同时CAS会改变     
+        小于时    CAX=1
+        大于时    CAX=0
+
+    相同时CAZS会改变    CAS=0    Z=1
+
+
+call 调用
+RET  返回
+    RET 10      除了完成RET的操作之外,ESP还要增加10h。所以,ESP的增量为10h + 4h = 14h = 20  也就是需要出栈的数量增加了 常在调用API完毕后清理按照stdcall调用约定传递给函数参数的堆栈空间。
+
+
+快捷键
+    空格                 编辑汇编
+    Alt+退格键           还原指令 撤销
+    Ctrl+*              修改EIP指针地址
+    Ctrl+N              Search for-Name(label)in current module         获取当前模块的API的名称列表
+        选择Follow import in Disassembler选项,我们就可以转到API函数的实现处
+
+    Follow in Dump-Immediate constant       快速跳转到内存数据区域
+
+
+od插件
+    HE    硬断点
+    BP    普通断点        必须指定API函数的确切名称,而且大小写敏感
+    BPX   引用或调用相关的都会被断下来  
+
+
+
+
+长度
+    DWORD   4个字节     双字
+    WORD    2个字节     字
+    BYTE    1个字节     字节
+
+
+OD中输入十六进制无法确认错误是因为 数字开头不能为字符,我们可以在开头添加0来解决这个问题  也就是要求写成十六进制的模式0x000xxx
