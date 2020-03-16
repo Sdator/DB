@@ -2,8 +2,8 @@
 # Git学习
 
 - [Git学习](#git%e5%ad%a6%e4%b9%a0)
-- [设置代理](#%e8%ae%be%e7%bd%ae%e4%bb%a3%e7%90%86)
-- [查询代理状态](#%e6%9f%a5%e8%af%a2%e4%bb%a3%e7%90%86%e7%8a%b6%e6%80%81)
+- [设置](#%e8%ae%be%e7%bd%ae)
+	- [代理](#%e4%bb%a3%e7%90%86)
 - [初始化库](#%e5%88%9d%e5%a7%8b%e5%8c%96%e5%ba%93)
 - [克隆到本地](#%e5%85%8b%e9%9a%86%e5%88%b0%e6%9c%ac%e5%9c%b0)
 - [暂存](#%e6%9a%82%e5%ad%98)
@@ -21,7 +21,9 @@
 > 2018. AM By：Air
 
 
-# 设置代理
+# 设置
+
+## 代理
 ```bash
 # 全局代理
 git config --global http.proxy 127.0.0.1:10000
@@ -33,12 +35,7 @@ git config --global https.proxy http://localhost:10000/
 
 # 局部代理 仓库内执行
 git config --local http.proxy 127.0.0.1:1088
-```
 
-
-
-# 查询代理状态
-```bash
 #查询全局代理
 git config --global http.proxy
 
@@ -49,6 +46,7 @@ git config --local http.proxy
 git config --global --unset http.proxy
 git config --global --unset https.proxy
 git config --local --unset http.proxy
+git config --local --unset https.proxy
 ```
 
 # 初始化库
