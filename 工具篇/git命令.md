@@ -24,7 +24,7 @@
 # 设置代理
 ```bash
 # 全局代理
-git config --global http.proxy 127.0.0.1:1234
+git config --global http.proxy 127.0.0.1:10000
 git config --global https.proxy 127.0.0.1:10000
 git config --global http.proxy 'socks5://127.0.0.1:10086'
 git config --global https.proxy 'socks5://127.0.0.1:10086'
