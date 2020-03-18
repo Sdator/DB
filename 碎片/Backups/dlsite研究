@@ -1,0 +1,204 @@
+untitled:Untitled-3
+
+搜索提交地址信息
+https://www.dlsite.com/eng/fsr/=/language/en/sex_category%5B0%5D/male/ana_flg/all/age_category%5B0%5D/general/order%5B0%5D/release_d/work_type_category%5B0%5D/game/work_type_category_name%5B0%5D/Game/genre_and_or/or/options_and_or/or/file_type%5B0%5D/EXE/file_type%5B1%5D/FLA/file_type%5B2%5D/PDF/file_type%5B3%5D/APK/file_type%5B4%5D/ET1/file_type_name%5B0%5D/EXE/file_type_name%5B1%5D/FLASH/file_type_name%5B2%5D/PDF/file_type_name%5B3%5D/APK/file_type_name%5B4%5D/Etc+File/file_type_category%5B0%5D/html/file_type_category%5B1%5D/image/file_type_category%5B2%5D/movie_file/file_type_category_name%5B0%5D/HTML+file/file_type_category_name%5B1%5D/Image+file/file_type_category_name%5B2%5D/Movie+file/per_page/100/show_type/1/from/fs.detail
+
+
+
+DLsite，DMM，DLgetchu通用支付方式，Bitcash注册教程
+
+
+https://play.dlsite.com/eng/#/work/RE243414
+
+https://www.dlsite.com/eng/work/=/product_id/RE243414.html
+
+Download
+DLsite Play - able
+
+购买提交信息
+提交地址
+Request URL: https://rtg-adroute.focas.jp/post
+
+提交数据
+rtg_mark_id = 17 & url=https % 3A % 2F % 2Fssl.dlsite.com % 2Feng % 2Fpay % 2Fpoint % 2F % 3D % 2Fre_layout % 2Fcart % 2Fview % 2Fpoint & adr_id=mbXmFJcz6WcQO4UEgkB5xsoBDNNq4NGrrEOlUksKWOjkBs9b
+
+
+get 获取购买得所有商品
+https://ssl.dlsite.com/eng/load/member/status
+
+
+
+
+全年龄向
+https://www.dlsite.com/soft/
+搜素
+https://www.dlsite.com/soft/fs
+
+
+男性向 女孩游戏
+https://www.dlsite.com/pro/
+
+搜素
+https://www.dlsite.com/pro/fs
+
+
+
+自动刷新列表xhr
+anno = 3 & client=te_lib & format=html & v=1.0 & key=AIzaSyBOti4mM - 6x9WDnZIjIeyEU21OpBXqWBgw & logld=vTE_20181015_01 & sl=ja & tl=zh - CN & sp=nmt & tc=28 & sr=1 & tk=892259.724024 & mode=1
+
+anno = 3 & client=te_lib & format=html & v=1.0 & key=AIzaSyBOti4mM - 6x9WDnZIjIeyEU21OpBXqWBgw & logld=vTE_20181015_01 & sl=ja & tl=zh - CN & sp=nmt & tc=29 & sr=1 & tk=882783.780548 & mode=1
+
+
+get获取相关产品信息
+https://www.dlsite.com/maniax/product/info/ajax?product_id=RJXXXXXX%2CRJXXXXXX%2C&cdn_cache=3
+
+
+
+
+
+& cdn_cache=3
+
+
+
+Work Format	    类型
+Action       动作
+マンガ       漫画
+
+File Format	    文件格式
+EXE             可执行程序
+
+
+提交地址
+
+读取用户购物篮 get
+https://www.dlsite.com/pro/load/member/status
+
+
+提交内容
+mode = cart & obj_nocheck=1 & product_id=BJ148880
+
+//55555
+
+{
+    const url = "https://www.dlsite.com/pro/cart/ajax"
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        cache: false,           //不从缓存获取结果
+        // dataType: 'html',   
+        data: {
+            'mode': "cart",
+            "obj_nocheck": 1,
+            "product_id": "BJ148880"
+        },
+        success(data, textStatus) {
+            console.log(1, data, 2, textStatus, 3)
+
+        }
+
+    })
+}
+
+
+
+
+{
+    const url = "https://www.dlsite.com/maniax/product/info/ajax?product_id="
+
+    for (let index = 1001; index <= 1002; index++) {
+        getInfo(url + "RJ" + index.toString().padStart(6, 0))
+    }
+    var json = ""
+
+    function getInfo(url) {
+        $.ajax({
+            type: "get",
+            url: url,
+            cache: false,           //不从缓存获取结果
+            // dataType: 'html',   
+            success(data, textStatus) {
+                const set = new Set()
+                json = JSON.parse(data)
+                //只有单个子对象的情况下
+                for (const 子对象 in json) {
+                    // console.log(子对象, json[子对象])
+
+                    for (const { title_name, site_id } of json[子对象]) {
+                        console.log(title_name, site_id)
+                    }
+
+                }
+
+
+            }
+        })
+    }
+}
+
+
+{
+    $.getJSON("https://www.dlsite.com/maniax/product/info/ajax?product_id=RJ001001", function (data) {
+        console.log(data)
+        for (let a in data) {
+            const { down_url, site_id } = data[a]
+            console.log(down_url, site_id)
+        }
+    }
+    )
+}
+
+
+
+
+
+
+site_id
+
+字符串                  对象属性
+official_price_str      official_price          原价
+price_str               price                    实时价格
+rate_count                                      人气
+site_id                                         分类        "maniax"
+site_id_touch                                   类型             "maniaxtouch"
+wishlist_count                                  愿望单累计
+dl_count                                        贩卖数量
+iscount_to                                      相关折扣链接
+down_url                                        下载地址
+title_name                                      标题
+maker_id
+
+
+site_id
+girlspro
+books
+blpro
+comic
+home        hometouch / home
+bl
+maniax      maniaxtouch
+
+
+
+$("dt:contains('bj')")
+
+
+$("dt[ID]")
+$("#search_result_img_box>li dt")
+
+//好像是漫画列表
+https://www.dlsite.com/pro/api/=/coupon.json?cdn_cache=6
+
+
+
+/*成功返回
+<response>
+    <result_code> 0 </result_code>
+    <res_msg> カートに入っています </res_msg>
+</response>
+*/
+
+
+https://www.dlsite.com/bl-pro/discount/=/campaign/4ra9wc
+iscount_to: "https://www.dlsite.com/books/discount/=/campaign/4dezmu"
+

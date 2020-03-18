@@ -1,0 +1,26 @@
+untitled:Untitled-1
+
+
+MINGW64 各版本离线包
+https://sourceforge.net/projects/mingw-w64/files/?source=navbar
+
+
+MINGW非官方编译器集成安装包
+MinGW-w64
+TDM-MinGW GCC       集成了32位、64位的GCC 5.1.0 c/c++/fortran编译器等
+https://www.cnblogs.com/findumars/p/7222964.html
+
+
+c/c++集成开发环境
+    codeblock
+
+
+
+
+
+
+
+g++ -shared a.cpp -o test.dll -I .
+
+
+添加-I . 可以同时打包同目录下被引用的头文件

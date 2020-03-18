@@ -1,0 +1,43 @@
+untitled:Untitled-3
+Aasl	efctid	table: 048343E0
+datab	table: 04834418
+datac	table: 04834B88
+editorsuffix	 (龙卷风)
+buttonpos_1	0
+levelskip	0
+cost	table: 048345A0
+missilearc	0.0
+researchbuttonpos_2	0
+reqlevel	0
+unbuttonpos_2	0
+buttonpos_2	0
+cast	table: 04834E60
+unbuttonpos_1	0
+missilespeed	0
+race	naga
+cool	table: 04834CD8
+hero	0
+_max_level	1
+_type	ability
+item	0
+levels	1
+buffid	table: 04834D10
+checkdep	0
+researchbuttonpos_1	0
+unubertip	table: 04834FE8
+area	table: 04834E98
+dur	table: 04834AE0
+untip	table: 04835020
+_code	Aasl
+name	减速光环
+herodur	table: 04834F40
+casterattachcount	0
+_id	Aasl
+targetattachcount	0
+ubertip	table: 04834D48
+missilehoming	0
+targs	table: 04834AA8
+priority	0
+tip	table: 04834C68
+dataa	table: 04834B18
+rng	table: 04834BC0

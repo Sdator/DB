@@ -1,0 +1,153 @@
+file:///d%3A/Git/%E7%94%9F%E5%AD%98%E6%B3%95%E5%88%99/w3x2lni/plugin/test.lua {"mtime":1583320135405,"ctime":1583241704006,"size":3831,"etag":"34mo47cod3ui","orphaned":false}
+-- 插件应该是一个lua脚本，它需要返回一张表
+local mt = {}
+local fs = require 'bee.filesystem'
+
+mt.info = {
+    name = 'test',
+    version = 1.0,
+    author = '绝版大叔',
+    description = '递增'
+}
+
+function ToStringEx(value)
+    if type(value) == 'table' then
+        return TableToStr(value)
+    elseif type(value) == 'string' then
+        return "'" .. value .. "'"
+    else
+        return tostring(value)
+    end
+end
+
+function TableToStr(t)
+    if t == nil then
+        return ''
+    end
+    local retstr = '{'
+
+    local i = 1
+    for key, value in pairs(t) do
+        local signal = ','
+        if i == 1 then
+            signal = ''
+        end
+
+        if key == i then
+            retstr = retstr .. signal .. ToStringEx(value)
+        else
+            if type(key) == 'number' or type(key) == 'string' then
+                retstr = retstr .. signal .. '[' .. ToStringEx(key) .. ']=' .. ToStringEx(value)
+            else
+                if type(key) == 'userdata' then
+                    retstr =
+                        retstr .. signal .. '*s' .. TableToStr(getmetatable(key)) .. '*e' .. '=' .. ToStringEx(value)
+                else
+                    retstr = retstr .. signal .. key .. '=' .. ToStringEx(value)
+                end
+            end
+        end
+        i = i + 1
+    end
+
+    retstr = retstr .. '}'
+    return retstr
+end
+
+-- * https://blog.csdn.net/zhang197093/article/details/71747336
+-- local function getCurrentDir()
+--     local function sum(a, b)
+--             return a + b
+--     end
+--     local info = debug.getinfo(sum)
+--     -- for k,v in pairs(info) do
+--     --         print(k, ':', info[k])
+--     -- end
+--     --解析出来当前目录
+--     local path = info.source
+--     path = string.sub(path, 2, -1) -- 去掉开头的"@"
+--     path = string.match(path, "^(.*)\\") -- 捕获最后一个 "/" 之前的部分 就是我们最终要的目录部分
+--     return string.gsub(path,'\\','/')
+-- end
+
+
+-- 数值转字符
+local function I2S(num)
+    local x = ''
+    for i = 1, 4 do
+        -- 32位4字节逐个字节取出转换为字符
+        x = x .. string.char(num >> (8 * (4 - i)) & 0xff)
+    end
+    return x
+end
+
+-- 字符转数值
+local function S2I(s)
+    local num = 0
+    for i = 1, #s do
+        -- 
+        local x = string.byte(s, i)
+        num = num + (x << ((#s - i) * 8))
+        -- print(x << ((#s - i) * 8))
+    end
+    return num
+end
+
+
+
+-- 获取所有对象的方法
+local function GetFun(tab)
+    local s = ''
+    for k, v in pairs(tab) do
+        s = s .. k .. '\t' .. tostring(v) .. '\n'
+    end
+    return s
+end
+
+-- 写出调试信息到本地文件
+local function WirtFile(data)
+    -- 重写文件 如果没有就创建
+    -- ! arg[2] 获取工作目录 并把路径反斜杠转为正斜杠
+    -- * 把日志写到当前工作目录的根目录
+    -- ! 获取目录还有一种内置方法 _W2L_DIR
+    -- local file = io.open(tostring(fs.path(_G.arg[2])) .. '/log.txt', 'w')
+    local file = io.open(tostring(fs.path(_W2L_DIR)) .. '/log.txt', 'w')
+    -- ! 读模式
+    -- 设置默认输入文件为 test.txt
+    -- io.input(file)
+    -- ! 写模式
+    -- 设置默认输出文件为 test.lua
+    io.output(file)
+
+    -- 写出数据
+    io.write(data)
+
+    -- 关闭打开的文件
+    file:close()
+end
+
+-- 完整数据（Full）事件，关于完整数据的定义见这里。在该事件中可以简单方便的修改物编数据从而修改转换后的结果。
+-- 完整数据内的数据格式可以参考物编数据表
+-- data\zhCN-1.24.4\prebuilt\Custom
+-- ability 技能
+function mt:on_full(w2l)
+    local txt = ''
+    local i = 0
+    for id, obj in pairs(w2l.slk.ability) do
+        i = i + 1
+        -- obj.name = 'asdsad' .. obj.name
+        txt = txt .. id .. '\t' .. i .. ' ' .. tostring(obj.name) .. '\n'
+        -- if obj.name then
+        --     obj.name = i .. obj.name
+        -- end
+
+        -- if tonumber('0x'..id)>0xAa00) then
+        --     -- statements
+        -- end
+        -- print(string.format('对象 %d 个, ID %d 个', obj, id))
+    end
+    WirtFile(txt)
+    -- mt:file_save('log', 'test.log', "1111111")
+end
+
+return mt

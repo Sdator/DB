@@ -1,0 +1,40 @@
+file:///d%3A/Git/Docker/psp/psp.md {"mtime":1580047690280,"ctime":1580046075433,"size":1220,"etag":"34h9hda4318b","orphaned":false}
+# PSP
+
+> 自用的是psp 2000 `TA-v088 v1`
+
+## 1. 主板芯片型号
++ 名词解释：
+  + `Tachyon`：芯片版本,其中包含CPU(中央处理器) GPU(图形处理器)和ME(硬件解码)
+  + `Baryon`：PSP的Syscon(系统控制) 芯片
++ 1000
+    + TA-079 v1 (Tachyon:0x00140000 ; Baryon:0x00030600)
+    + TA-079 v2 (Tachyon:0x00200000 ; Baryon:0x00030600)
+    + TA-079 v3 (Tachyon:0x00200000 ; Baryon:0x00040600)
+    + TA-081 (Tachyon:0x00300000 ; Baryon:0x00040600)
+    + TA-082 (Tachyon:0x00400000 ; Baryon:0x00114000)
+    + TA-086 (Tachyon:0x00400000 ; Baryon:0x00121000)
++ 2000
+    + TA-085 (Tachyon:0x00500000 ; Baryon:0x0022B200) 索尼PSP 3.6系统
+    + TA-085 v2 (Tachyon:0x00500000 ; Baryon:0x00234000) 索尼PSP 3.71系统
+    + `TA-088 v1 (Tachyon:0x00500000 ; Baryon:0x00243000) 索尼PSP 3.90系统`
+    + TA-088 v2 (Tachyon:TBA ; Baryon:TBA ) 索尼PSP 3.90系统
+    + TA-088 v3 (Tachyon:??? ; Baryon:???) 索尼PSP 4.01系统
++ 3000
+
+
+
+
+
+## 2. 零售机型&支持
+
+型号|芯片|制作神电|神电刷机
+-|-|-|-
+1000|TA-079/081/081/086|`√`|`√`
+2000|TA-085 v1|`√`|`√`
+||TA-085 v2/`088`|×|`√`
+||TA-088v3/090v1|×|×
+3000|TA-090v2/092/093/095|×|×
+go|TA-091/094|×|×
+E1000|TA-096/097|×|×
+

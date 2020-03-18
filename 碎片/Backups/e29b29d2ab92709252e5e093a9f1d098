@@ -1,0 +1,20 @@
+untitled:Untitled-8
+
+
+ssh root@209.250.236.243 -i "C:\Users\Air\.ssh\git"
+
+ssh root@149.28.103.76 -i "C:\Users\Air\.ssh\id_rsa"
+
+美国149.28.103.76
+
+
+ps -aux | grep 'bash'
+
+ssh-agent bash
+ssh-add ~/.ssh/id_rsa
+service sshd restart
+
+ssh免密登陆失败查错技巧 寻找日志有关权限和目录关键字来判断
+tail /var/log/secure -n 20|grep directory
+ownership       权限
+directory       目录
