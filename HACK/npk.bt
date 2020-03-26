@@ -1,0 +1,17 @@
+//------------------------------------------------
+//--- 010 Editor v10.0 Binary Template
+//
+//      File: npk.bt
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: .npk
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+
+char name[4] <comment="标识头">;
+uint Data1[19] <format=hex>;
+
