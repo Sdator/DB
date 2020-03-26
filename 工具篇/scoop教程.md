@@ -60,9 +60,9 @@ $env:SCOOP_GLOBAL='D:\GlobalScoopApps'
 scoop install aria2
 # 启用aria2 默认是开启的
 scoop config aria2-enabled true
-# 修改最大连接数 默认是 5 视机器配置网速而定
-# 参数设置过太会堵塞网络，同时网站也有可能会封 IP 或阻断连接
-scoop config aria2-max-connection-per-server 50
+# 修改最大连接数 默认是 5 最大 16 视机器配置网速而定
+# 参数设置过太可能会堵塞网络，同时网站也有可能会封 IP 或阻断连接
+scoop config aria2-max-connection-per-server 16
 
 # 代理设置 建议采用http协议 但无需填写协议前缀 
 scoop config proxy proxy.example.org:8080
