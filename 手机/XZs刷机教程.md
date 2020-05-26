@@ -1,4 +1,4 @@
-# 索尼刷机步骤
+# 索尼XZs刷机教程
 + 最近咸鱼了一台索尼XZs 港版 4+64 双卡版型号为 G8232, 因此以下教程适用于 G8232
 + 以下操作会解锁你的手机导致 TA 分区丢失，会导致部分功能丢失如：超逼真、相机降噪算法消失..
 + 请自行备份 TA 分区后再刷, 由于机主原先已经解锁了所以对我来说无所谓了。
@@ -77,7 +77,8 @@
 
 
 
-
+## 其他有趣的东西
++ https://github.com/phhusson/treble_experimentations/wiki/Generic-System-Image-%28GSI%29-list
 
 
 adb pull "/sdcard/Pictures/Screenshots/Screenshot_20200413-175541.png" Screenshot_20200413-175541.png 
