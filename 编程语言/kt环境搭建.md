@@ -1,6 +1,7 @@
 ## vscode 下 kt 开发环境搭建
 1. 搭建 Java JDK 环境 要求 jdk 8 11 14
    + scoop install -g openjdk11（scoop包管理下载）
+   + https://www.oracle.com/java/technologies/javase-downloads.html
 2. 下载 Kotlin 命令行编译器
    + scoop install -g kotlin （scoop包管理下载）
    + https://github.com/JetBrains/kotlin/releases/tag/v1.3.72 （手动下载、需要手动添加环境变量）
