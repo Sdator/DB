@@ -1,4 +1,3 @@
-﻿
 # Git学习
 
 - [Git学习](#git%e5%ad%a6%e4%b9%a0)
@@ -178,6 +177,17 @@ git remote add web https://gitee.com/sdator/sdator.git
 	
 	移除仓库
 		git remote rm 仓库名字
+
+	添加把本地仓库 origin 和远程仓库关联
+	git remote add origin git@github.com:Sdator/H.git
+
+	设置远程默认分支 master 和 本地仓库默认分支 origin/master 的关联
+	git branch --set-upstream master origin/master			//命令不再支持
+	git branch -u master origin/master
+	git branch --track master origin/master
+	git pull origin master
+	git branch --set-upstream-to=origin/master master
+
 
 
 	

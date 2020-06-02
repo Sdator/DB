@@ -16,7 +16,14 @@
   
 ## 参考
 https://aria2.github.io/manual/en/html/aria2c.html
+https://trackerslist.com/#/zh
+https://github.com/XIU2/TrackersListCollection/blob/master/README-ZH.md
 
+
+## 设置别名
+```bash
+alias _aria2c="aria2c -x 16"
+```
 
 ## 例子
 ```bash
@@ -35,13 +42,9 @@ aria2c -x 16 -k 5M --all-proxy 127.0.0.1:10000 <url>
 # 文件续传
 aria2c -c <url>
 
-
-```
-
+aria2c -x 16
 
 
-## 例子
-```bash
 --header="User-Agent: Quicktime"
 
 
