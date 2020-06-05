@@ -72,3 +72,15 @@ val hexBytes = 0xFF_EC_DE_5E
 val bytes = 0b11010010_01101001_10010100_10010010
 
 ```
+
+
+- 注解
+  
+```kotlin
+// 表示此方法在将来特定版本中会删除 提示改用 this.reply(message) 方法 
+@Deprecated("use reply instead", ReplaceWith("this.reply(message)"))
+// 这个注解的主要用途就是告诉编译器生成的Java类或者方法的名称
+@JvmName("reply3")
+
+
+```
