@@ -1,0 +1,26 @@
+从所有历史记录中删除
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch --ignore-unmatch demo.w3x' --prune-empty --tag-name-filter cat -- --all
+
+/    or 的意思
+,    and 的意思
+ext 文件扩展名
+height  分辨率 720 1080
+
+
+youtube-dl --proxy 127.0.0.1:10000 -F https://www.pornhub.com/view_video.php?viewkey=ph5ca6623ca8551
+
+//优先选择 最好的MP4视频和最好的m4a音频合并到一个文件 要求安装 ffmpeg 或 avconv 限制格式和资源流
+//如果没有 就选择最佳的带有视频和音频的单个mp4视频文件 限制格式
+//如果没有 就选择最佳的带有视频和音频的单个视频文件  格式不限
+youtube-dl --proxy 127.0.0.1:10000 -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' https://www.pornhub.com/view_video.php?viewkey=ph5ca6623ca8551
+
+//下载单一最好的视频文件和最好的音频文件
+youtube-dl --proxy 127.0.0.1:10000 -f 'bestvideo,bestaudio' -o '%(title)s.f%(format_id)s.%(ext)s' https://www.pornhub.com/view_video.php?viewkey=ph5ca6623ca8551
+
+youtube-dl --proxy 127.0.0.1:10000 -f 'bestaudio,[height=240]' -o '%(title)s.f%(format_id)s.%(ext)s' https://www.pornhub.com/view_video.php?viewkey=ph5ca6623ca8551
+
+
+
+best
+
+533540,844870
