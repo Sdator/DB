@@ -1,23 +1,59 @@
-
-- [minikube命令行](#minikube%e5%91%bd%e4%bb%a4%e8%a1%8c)
-  - [启动](#%e5%90%af%e5%8a%a8)
-  - [删delete](#%e5%88%a0delete)
-  - [缓冲cache](#%e7%bc%93%e5%86%b2cache)
-  - [配置](#%e9%85%8d%e7%bd%ae)
-  - [声明式配置](#%e5%a3%b0%e6%98%8e%e5%bc%8f%e9%85%8d%e7%bd%ae)
-- [kubectl](#kubectl)
-- [查看命令 kubectl](#%e6%9f%a5%e7%9c%8b%e5%91%bd%e4%bb%a4-kubectl)
-- [创建](#%e5%88%9b%e5%bb%ba)
-- [删 kubectl delete](#%e5%88%a0-kubectl-delete)
-- [kubectl](#kubectl-1)
-- [其他](#%e5%85%b6%e4%bb%96)
-- [更新](#%e6%9b%b4%e6%96%b0)
-  - [start](#start)
-
-
-
-
 # minikube命令行
+
+### 配置代理
+
+```bash
+# linux 环境变量配置 加入到 ~/.bashrc
+export HTTP_PROXY=http://127.0.0.1:10001
+export HTTPS_PROXY=https://127.0.0.1:10001
+# 不应该走代理的ip段
+export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+
+minikube start \
+--docker-env http_proxy=http://127.0.0.1:10001 \
+--docker-env https_proxy=http://127.0.0.1:10001 \
+--docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+
+```
+
+### 指定k8s版本
+
+```bash
+minikube start \
+--kubernetes-version v1.19.0
+```
+### 指定VM驱动
+
+```bash
+minikube start \
+--driver=<driver_name>
+```
+
+- 支持的驱动
+  - virtualbox
+  - vmwarefusion
+  - kvm2 ([驱动安装](https://minikube.sigs.k8s.io/docs/drivers/#kvm2-driver))
+  - hyperkit ([驱动安装](https://minikube.sigs.k8s.io/docs/drivers/#hyperkit-driver))
+  - hyperv ([驱动安装](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperv-driver))
+
+- 请注意，下面的 IP 是动态的，可以更改。可以使用 `minikube ip` 检索。
+  - vmware (驱动安装) （VMware 统一驱动）
+  - none (在主机上运行Kubernetes组件，而不是在 VM 中。使用该驱动依赖 Docker (安装 Docker) 和 Linux 环境)
+
+  
+
+### 查看IP
+
+```bash
+minikube ip
+```
+
+## 检查群集状态
+
+```bash
+minikube status
+```
+
 ## 启动
 ```bash
 # 创建群集 也就是创建虚拟机
@@ -29,18 +65,19 @@ minikube start -p cluster2
 minikube start --vm-driver=hyperv 
 
 # 国内启动minikube
-minikube start --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers --vm-driver=hyperv 
-# 大陆用于镜像下载加速
---image-mirror-country=cn
 # 采用阿里云镜像站的资源下载
---image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
-
 # 加速器可以到阿里云获取加速地址
---registry-mirror=https://im0hy9gl.mirror.aliyuncs.com
+# 大陆用于镜像下载加速
+minikube start \
+--image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers \
+--registry-mirror=https://im0hy9gl.mirror.aliyuncs.com \
+--image-mirror-country=cn
+
+minikube start --vm-driver=virtualbox \
+--image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
 
 # 用containerd容器 也可以用docker
 --container-runtime=containerd
-
 
 ```
 
@@ -78,24 +115,29 @@ minikube config set vm-driver hyperv
 minikube config set memory 4096
 ```
 
-## 声明式配置
+# kubectl命令行
+
+
+
+### 创建第一个
+
 ```bash
-#把某个类型po svc deploy转为yaml 对象需要后期处理
-kubectl get <kind>/<name> -o yaml > <kind>_<name>.yaml
-kubectl get deploy cq -o yaml > 123.yaml
+# 拉取镜像
+kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
+# 公开端口
+kubectl expose deployment hello-minikube --type=NodePort --port=8080
+# 列出容器
+kubectl get pod
 
-#通过以上导出修改后可以进行更新编排替换原有的配置
-kubectl replace -f <kind>_<name>.yaml
+# 列出服务公开地址
+minikube service hello-minikube --url
 
-#把某个类型po svc deploy转为yaml 声明方式 更负责编排
-kubectl replace --save-config -f 123.yaml
-
+# 查看容器失败原因 ImagePullBackOff状态
+kubectl describe pod hello-minikube-64b64df8c9-sxnv9
 
 ```
 
 
-
-# kubectl
 
 ```bash
 # 连接到容器中
@@ -111,8 +153,21 @@ kubectl exec -it cq-pod sh
 kubectl label pod $POD_NAME app=v1
 ```
 
+## 声明式配置
+```bash
+#把某个类型po svc deploy转为yaml 对象需要后期处理
+kubectl get <kind>/<name> -o yaml > <kind>_<name>.yaml
+kubectl get deploy cq -o yaml > 123.yaml
 
-# 查看命令 kubectl
+#通过以上导出修改后可以进行更新编排替换原有的配置
+kubectl replace -f <kind>_<name>.yaml
+
+#把某个类型po svc deploy转为yaml 声明方式 更负责编排
+kubectl replace --save-config -f 123.yaml
+```
+
+
+## 查看命令 kubectl
 
 ```bash
 # 查看客户端和服务端版本
@@ -152,7 +207,7 @@ kubectl describe services example-service
 kubectl get pods --selector="run=load-balancer-example" --output=wide
 ```
 
-# 创建
+## 创建
 ```bash
 # 创建应用
 kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
@@ -178,7 +233,7 @@ kubectl expose deployment hello-world --type=NodePort --name=example-service
 
 ```
 
-# 删 kubectl delete
+## 删 kubectl delete
 ```bash
 # 要删除服务，请输入以下命令：
 kubectl delete services example-service
@@ -192,7 +247,7 @@ kubectl delete po cq-78c488ccdf-zljp6
 
 
 
-# kubectl
+## kubectl
 
 ```bash
 # 查看资源列表和资源短写
@@ -307,7 +362,7 @@ minikube addons enable dashboard
 minikube delete
 ```
 
-# 更新
+## 更新
 ```bash
 # 更新pod副本数量
 kubectl scale -n default deployment cq --replicas=1

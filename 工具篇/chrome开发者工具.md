@@ -1,13 +1,25 @@
 ## 常用函数
 ```js
 // 用css语法查询元素
-$$(css过滤器)        
+$$(css过滤器)
 // 用xpath语法查询元素
 $x(xpath表达式)
 // 查看对象类型
 Object.prototype.toString.call(要查询的对象)
 
 ```
+
+## DevTools
+ctrl+shift+p 打开命令
++ coverage 记录页面读取耗时
++ capture full size screenshot 整个网页截图
++ Network
+  + 右击 Block Request URL 禁止请求
+  + request blocking
+    + 支持通配符阻断连接 *.css *.js
+    + 红色表示禁止的请求
+
+
 
 事件驱动
 + https://www.cnblogs.com/CyLee/p/7513342.html
@@ -22,12 +34,12 @@ var dom = document.querySelector('#id')
 document.addEventListener('alert', function (event) {
   console.log(event)
 }, false);
- 
+
 // 3 创建事件对象
 var evt = document.createEvent("HTMLEvents");
 // 4 初始化事件
 evt.initEvent("alert", false, false);
- 
+
 // 5 在dom中触发evt事件 >> 2
 dom.dispatchEvent(evt);
 
@@ -76,7 +88,7 @@ $x('//div/p/text()')        // 获取 p 节点下的文本
 + 属性值一定要用引号，单引号 或 双引号
 ```bash
 # 语法
- //*[@属性名='属性值']
+//*[@属性名='属性值']
 #  选择id为app的元素
 //*[@id='app']
 
