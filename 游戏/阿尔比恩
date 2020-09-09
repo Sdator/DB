@@ -1,1 +1,58 @@
-<mxfile host="app.diagrams.net" modified="2020-09-08T19:10:57.696Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36" version="13.6.9" etag="86l7sD23x9ISnV0oLkGc" type="github"><diagram id="F10KERBEfjOHlAnQph2B">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2020-09-09T00:06:18.005Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36" etag="Gx1Tr782eIr06xA2qfgf" version="13.6.9" type="github">
+  <diagram id="F10KERBEfjOHlAnQph2B" name="第 1 页">
+    <mxGraphModel dx="2249" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Oh_Skanik-svW-W0tERh-9" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-30" y="50" width="350" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-1" value="生物群落区" style="rounded=1;whiteSpace=wrap;html=1;horizontal=1;fontSize=30;fontStyle=1;verticalAlign=top;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="Oh_Skanik-svW-W0tERh-9">
+          <mxGeometry width="350" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-2" value="草原" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="Oh_Skanik-svW-W0tERh-9">
+          <mxGeometry x="194" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-3" value="&lt;span&gt;山地&lt;/span&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="Oh_Skanik-svW-W0tERh-9">
+          <mxGeometry x="40" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-5" value="沼泽" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="Oh_Skanik-svW-W0tERh-9">
+          <mxGeometry x="40" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-6" value="森林" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="Oh_Skanik-svW-W0tERh-9">
+          <mxGeometry x="40" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-8" value="高地" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="Oh_Skanik-svW-W0tERh-9">
+          <mxGeometry x="194" y="170" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-14" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="400" y="30" width="310" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-11" value="狐狸" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;verticalAlign=top;" vertex="1" parent="Oh_Skanik-svW-W0tERh-14">
+          <mxGeometry width="310" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-13" value="兽皮" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;" vertex="1" parent="Oh_Skanik-svW-W0tERh-14">
+          <mxGeometry x="40" y="90" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-19" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="370" y="290" width="310" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-15" value="" style="group" vertex="1" connectable="0" parent="Oh_Skanik-svW-W0tERh-19">
+          <mxGeometry width="310" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-16" value="桦树" style="rounded=1;whiteSpace=wrap;html=1;fontSize=30;verticalAlign=top;" vertex="1" parent="Oh_Skanik-svW-W0tERh-15">
+          <mxGeometry width="310" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-17" value="树皮：白色" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;" vertex="1" parent="Oh_Skanik-svW-W0tERh-15">
+          <mxGeometry x="30" y="60" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-18" value="树叶：黄色" style="rounded=1;whiteSpace=wrap;html=1;fontSize=20;" vertex="1" parent="Oh_Skanik-svW-W0tERh-15">
+          <mxGeometry x="170" y="60" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Oh_Skanik-svW-W0tERh-20" value="&lt;div&gt;桦树的树皮为白色，树叶为黄色。&lt;/div&gt;&lt;div&gt;高阶树木的树皮和树叶颜色不同。&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;fontSize=20;" vertex="1" parent="1">
+          <mxGeometry x="190" y="550" width="320" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
