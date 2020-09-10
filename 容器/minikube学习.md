@@ -1,6 +1,8 @@
-# minikube命令行
+# minikube
 
-### 配置代理
+
+
+## 配置代理
 
 ```bash
 # linux 环境变量配置 加入到 ~/.bashrc
@@ -16,45 +18,24 @@ minikube start \
 
 ```
 
-### 指定k8s版本
+- 
+
+## 查看基础信息
 
 ```bash
-minikube start \
---kubernetes-version v1.19.0
-```
-### 指定VM驱动
-
-```bash
-minikube start \
---driver=<driver_name>
-```
-
-- 支持的驱动
-  - virtualbox
-  - vmwarefusion
-  - kvm2 ([驱动安装](https://minikube.sigs.k8s.io/docs/drivers/#kvm2-driver))
-  - hyperkit ([驱动安装](https://minikube.sigs.k8s.io/docs/drivers/#hyperkit-driver))
-  - hyperv ([驱动安装](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperv-driver))
-
-- 请注意，下面的 IP 是动态的，可以更改。可以使用 `minikube ip` 检索。
-  - vmware (驱动安装) （VMware 统一驱动）
-  - none (在主机上运行Kubernetes组件，而不是在 VM 中。使用该驱动依赖 Docker (安装 Docker) 和 Linux 环境)
-
-  
-
-### 查看IP
-
-```bash
-minikube ip
-```
-
-## 检查群集状态
-
-```bash
+# 检查群集状态
 minikube status
+# 查看IP
+minikube ip
+
+# 启用仪盘表 web管理页面
+minikube addons enable dashboard
 ```
+
+
 
 ## 启动
+
 ```bash
 # 创建群集 也就是创建虚拟机
 minikube start
@@ -76,12 +57,15 @@ minikube start \
 minikube start --vm-driver=virtualbox \
 --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
 
-# 用containerd容器 也可以用docker
+# 使用containerd容器 也可以用docker
 --container-runtime=containerd
 
 ```
 
-## 删delete
+
+
+## 删(delete)
+
 ```bash
 # 删除本地集群
 minikube delete
@@ -96,7 +80,10 @@ minikube stop
 
 ```
 
-## 缓冲cache
+
+
+## 缓冲(cache)
+
 ```bash
 # 缓冲docker镜像
 minikube cache add ubuntu:16.04
@@ -107,47 +94,180 @@ minikube cache delete <image name>
 ```
 
 
+
 ## 配置
+
 ```bash
 # 设置默认使用的虚拟驱动
 minikube config set vm-driver hyperv
 # 设置默认内存分配大小
 minikube config set memory 4096
+
+
 ```
+
+
+
+## 文件共享
+
+```bash
+# 共享文件夹到虚拟机
+minikube mount /usr:/host
+minikube mount --ip=172.17.204.65 e:\\Git\\cq:/home/docker
+minikube ssh --native-ssh=false
+minikube mount $HOME:/host
+```
+
+
+
+## 代理
+
+- 直接设置环境变量即可传达给minikube
+
+```bash
+# linux
+export HTTP_PROXY=http://<proxy hostname:port>
+export HTTPS_PROXY=https://<proxy hostname:port>
+export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+
+# 删除环境变量
+unset HTTPS_PROXY
+unset HTTP_PROXY
+```
+
+```powershell
+# powershell  
+# 临时生效
+$env:HTTP_PROXY="http://127.0.0.1:10001"
+$env:HTTPS_PROXY="htts://127.0.0.1:10001"
+$env:NO_PROXY="$(minikube ip),localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24"
+
+
+```
+
+## 命令行
+
+### 指定k8s版本
+
+```bash
+minikube start \
+--kubernetes-version v1.19.0
+```
+
+
+
+### 指定VM驱动
+
+```bash
+minikube start \
+--driver=<driver_name>
+```
+
+- 支持的驱动
+
+  - virtualbox
+  - vmwarefusion
+  - kvm2 ([驱动安装](https://minikube.sigs.k8s.io/docs/drivers/#kvm2-driver))
+  - hyperkit ([驱动安装](https://minikube.sigs.k8s.io/docs/drivers/#hyperkit-driver))
+  - hyperv ([驱动安装](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md#hyperv-driver))
+
+- 请注意，下面的 IP 是动态的，可以更改。可以使用 `minikube ip` 检索。
+
+  - vmware (驱动安装) （VMware 统一驱动）
+  - none (在主机上运行Kubernetes组件，而不是在 VM 中。使用该驱动依赖 Docker (安装 Docker) 和 Linux 环境)
+
+  
+
+## W10端口转发
+
+```bash
+# 添加端口转发
+# 当收到来自本地8086端口的访问转发到minikube节点
+netsh interface portproxy add v4tov4 listenport=8086 listenaddress=127.0.0.1 connectport=32211 connectaddress=$(minikube ip)
+netsh interface portproxy add v4tov4 listenport=8086 listenaddress=192.168.3.2 connectport=32211 connectaddress=$(minikube ip)
+netsh interface portproxy add v4tov4 listenport=8086 listenaddress=172.24.98.47 connectport=32211 connectaddress=$(minikube ip)
+
+# 所有地址访问这个端口都会转发到minkube节点中
+netsh interface portproxy add v4tov4 listenport=8086 listenaddress=0.0.0.0 connectport=32211 connectaddress=$(minikube ip)
+
+# 查看系统中的所有转发规则
+netsh interface  portproxy show  v4tov4
+
+# 删除端口转发
+netsh interface portproxy del v4tov4 listenport=8086 listenaddress=127.0.0.1
+netsh interface portproxy del v4tov4 listenport=8086 listenaddress=192.168.3.2
+netsh interface portproxy del v4tov4 listenport=8086 listenaddress=172.24.98.47
+```
+
+
+
+
+
+## 报错解决
+
+- 内存预留是否足够
+
+- 命令行终端是否以管理员权限执行（右击管理员、sudo）
+
+- 网络是否畅通（代理、阿里镜像）
+
+- 硬盘空间是否充足
+
+  
 
 # kubectl命令行
 
-
-
-### 创建第一个
+## 创建
 
 ```bash
+# 创建应用、从编排配置文件中创建
+kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+kubectl create -f 123.yaml
+kubectl apply -f /opt/kubernetes-dashboard.yam
+
+# 创建实例过程
 # 拉取镜像
 kubectl create deployment hello-minikube --image=k8s.gcr.io/echoserver:1.10
 # 公开端口
 kubectl expose deployment hello-minikube --type=NodePort --port=8080
 # 列出容器
 kubectl get pod
-
 # 列出服务公开地址
 minikube service hello-minikube --url
-
 # 查看容器失败原因 ImagePullBackOff状态
 kubectl describe pod hello-minikube-64b64df8c9-sxnv9
 
+# 官方例子
+kubectl apply -f https://k8s.io/examples/service/access/hello-application.yaml
+kubectl expose deployment hello-world --type=NodePort --name=example-service
+
+# 创建deployment并公开端口 并设置环境变量
+kubectl run cq \
+--image=coolq/wine-coolq \
+--env="VNC_PASSWD=终端密码" \
+--env="COOLQ_ACCOUNT=Q号" \
+--port=9000 \
+--hostport=9000
+# 公开服务 等于创建了service
+kubectl expose deployment cq --type=NodePort --port=9000 --target-port=9000 --name=cq-service
+
+#创建容器 pod
+kubectl create deployment first-deployment --image=katacoda/docker-http-server
+# 暴露服务器80端口
+kubectl expose deployment first-deployment --port=80 --type=NodePort
+
 ```
 
-
+## 容器互动
 
 ```bash
 # 连接到容器中
 kubectl attach -it <name>
 kubectl attach -it cq-78c488ccdf-zljp6 
-# 进入容器  在容器中执行命令
+# 连接到容器中并执行命令
 kubectl exec -it cq-78c488ccdf-zljp6 sh
-kubectl exec cq-78c488ccdf-zljp6 env
-
 kubectl exec -it cq-pod sh
+kubectl exec cq-78c488ccdf-zljp6 env
 
 # 给pod添加一个标签v1
 kubectl label pod $POD_NAME app=v1
@@ -166,74 +286,105 @@ kubectl replace -f <kind>_<name>.yaml
 kubectl replace --save-config -f 123.yaml
 ```
 
+## 查
 
-## 查看命令 kubectl
+### 节点（node）
 
 ```bash
-# 查看客户端和服务端版本
-kubectl version
-
-# 查看窗格
-kubectl get po -A
-# 列出指定运行pod的信息
-kubectl get po -l run=cq              pod
-kubectl get services -l run=cq        服务器
 # 查看节点  也就是虚拟机或实体机
 kubectl get node
 kubectl get nodes
 # 为节点添加标签
 kubectl label nodes <your-node-name> disktype=ssd
+```
+### 容器集（POD）
+
+```bash
+# 查看pods
+kubectl get po
+kubectl get pod
+kubectl get pods
+# 查看所有窗格
+kubectl get po -A
+# 列出指定运行pod的信息
+kubectl get po -l run=cq              pod
 # 查看pod所运行在那个节点上
 kubectl get pods --output=wide
 # 等同上面 -w 是实时刷新
 kubectl get pods -o wide -w
 kubectl get pods -o lab
-# 查看pods
-kubectl get pods
+kubectl get pods --selector="run=load-balancer-example" --output=wide
+
+# 更新pod副本数量
+kubectl scale -n default deployment cq --replicas=1
+```
+### 部署（deployments）
+
+```bash
 #获取部署的应用 等同 docker ps
+kubectl get deploy
 kubectl get deployments
+
 # 显示有关您的ReplicaSet对象的信息
 kubectl get replicasets
 kubectl describe replicasets
+```
+### 服务（Service）
+```bash
+kubectl get svc
+kubectl get services
+kubectl get services -l run=cq        服务器
+```
+
+### 详细信息
+
+```bash
+# 查看详细信息
+kubectl describe <po>
 # 查看pod详细信息
-kubectl describe pods
-kubectl describe deployments
-kubectl describe deployment
+kubectl describe pods <name>
+kubectl describe deployments <name>
+kubectl describe deployment <name>
 # 查看服务
-kubectl get svc,po,deploy
 kubectl describe svc <depName>
 kubectl describe svc cqa
 kubectl describe services example-service
-kubectl get pods --selector="run=load-balancer-example" --output=wide
 ```
 
-## 创建
+
+
+### 其他信息
+
 ```bash
-# 创建应用
-kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+# 查看客户端和服务端版本
+kubectl version
 
-kubectl create -f 123.yaml
+# 查看资源列表和资源短写
+kubectl api-resources
 
+# 查看资源详细
+kubectl explain <po>
+
+# 查看群集的详细信息及其运行状况
+kubectl cluster-info
+
+
+# 查看仪盘表启动进度
+# 查看kube-system名称空间中的Pod
+kubectl get pods -n kube-system  -w
+```
+
+### 公开服务
+
+
+```bash
 # 公开pod端口
 kubectl expose deployment cq --external-ip="172.17.0.26" --port=9000 --target-port=9000
-kubectl expose deployment cqa --external-ip="127.0.0.1" --port=9000 --target-port=9000
-
-# 创建deployment并公开端口 并设置环境变量
-kubectl run cq \
---image=coolq/wine-coolq \
---env="VNC_PASSWD=19920818" \
---env="COOLQ_ACCOUNT=2970532291" \
---port=9000 \
---hostport=9000
-# 公开服务 等于创建了service
-kubectl expose deployment cq --type=NodePort --port=9000 --target-port=9000 --name=cq-service 
-# 从编排配置文件中创建
-kubectl apply -f https://k8s.io/examples/service/access/hello-application.yaml
-kubectl expose deployment hello-world --type=NodePort --name=example-service
-
+kubectl expose deployment cqa --external-ip="127.0.0.1" --port=9000 --target-port=900
 ```
 
-## 删 kubectl delete
+## 删（delete）
+
 ```bash
 # 要删除服务，请输入以下命令：
 kubectl delete services example-service
@@ -245,44 +396,10 @@ kubectl delete deployment cq
 kubectl delete po cq-78c488ccdf-zljp6
 ```
 
-
-
-## kubectl
+# 其他
 
 ```bash
-# 查看资源列表和资源短写
-kubectl api-resources
-# 查看资源详细
-kubectl explain <po>
 
-# 查看详细信息
-kubectl describe <po>
-
-
-# 查看群集的详细信息及其运行状况
-kubectl cluster-info
-
-# 使用以下命令查看集群中的节点
-kubectl get nodes
-
-#创建容器 pod
-kubectl create deployment first-deployment --image=katacoda/docker-http-server
-# 暴露服务器 first-deployment
-# 开启80端口
-kubectl expose deployment first-deployment --port=80 --type=NodePort
-
-# 根据yaml规则创建容器？
-kubectl apply -f /opt/kubernetes-dashboard.yaml
-# 查看仪盘表启动进度
-# 查看kube-system名称空间中的Pod
-kubectl get pods -n kube-system  -w
-
-```
-
-
-
-
-# 其他
 1. eval $(minikube docker-env --shell bash)
 1. eval $(minikube docker-env --shell powershell)
 
@@ -325,48 +442,19 @@ del env:HTTPS_PROXY
 
 ls env:HTT* | del
 
-minikube ip
-
-
-
-docker安装报错
-
-原因是卸载不干净有残余注册表
-1. 关闭安装进程
-1. 进入注册表编辑器：WIN+R，输入 regedit，回车
-1. 建议在以下操作前先备份注册表：文件->导出
-1. 找到 Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Docker for Windows 并删除
-
-
-```bash
-# 删除环境变量
-unset HTTPS_PROXY
-unset HTTP_PROXY
 ```
 
 
-Unable to connect to the server: dial tcp 172.17.204.77:8443: connectex: No connection could be made because the target machine actively refused it.
 
+## docker安装报错
 
+1. 原因是卸载不干净有残余注册表
 
+2. 关闭安装进程
 
-```bash
-# minikube
-设置默认驱动方式
-minikube config set vm-driver hyperv
-
-# 启用仪盘表 web管理页面
-minikube addons enable dashboard
-
-# 删除节点也就是虚拟机
-minikube delete
-```
-
-## 更新
-```bash
-# 更新pod副本数量
-kubectl scale -n default deployment cq --replicas=1
-```
+3. 进入注册表编辑器：WIN+R，输入 regedit，回车
+4. 建议在以下操作前先备份注册表：文件->导出
+5. 找到 Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Docker for Windows 并删除
 
 ## start
 
@@ -403,74 +491,33 @@ minikube start \
 
 
 # 国内用 有效
-minikube start --vm-driver=hyperv --registry-mirror https://im0hy9gl.mirror.aliyuncs.com --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-
-
-minikube start --vm-driver=hyperv \
+minikube start \
+--vm-driver=hyperv \
 --registry-mirror https://im0hy9gl.mirror.aliyuncs.com \
 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 
 
-minikube start --vm-driver=hyperv `
---registry-mirror https://im0hy9gl.mirror.aliyuncs.com `
---image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-
-
-
-
-
-
-
-
-
 minikube start \
 --image-mirror-country cn \
---vm-driver=hyperv
-
+--vm-driver=hyperv \
 --registry-mirror https://im0hy9gl.mirror.aliyuncs.com
-
 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-
-
-
-
 
 eval $(minikube docker-env)
 
 env | grep HTTP_PROXY
 
-```
-
-
 
 kubectl create deployment cq --image=coolq/wine-coolq 
-
 --port=9000:9000 --type
 -v `pwd`:/home/user/coolq 
 
 kubectl expose deployment cq --type=LoadBalancer --port=9000
-
 kubectl expose deployment cq --type=NodePort --port=9000
-
 kubectl delete svc cq
-
-```bash
-# 共享文件夹到虚拟机
-minikube mount /usr:/host
-
-minikube mount --ip=172.17.204.65 e:\\Git\\cq:/home/docker
-
-minikube ssh --native-ssh=false
-
-
-172.17.204.65
-172.17.204.77
-
-minikube mount $HOME:/host
-
-
-
-
 ```
+
+
+
 
 
