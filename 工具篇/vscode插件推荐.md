@@ -84,3 +84,47 @@
     - 命令 `shellLauncher.launch`
 
   
+
+## `formulahendry.code-runner`
+
+### 主要使用功能
+
+- ### 快速运行各类语言代码片段 （`js、py、java、c`...）
+
+- ### 活动页面右击`run code`执行
+
+  
+
+# 养眼类
+
+## `coenraads.bracket-pair-colorizer-2`、`2gua.rainbow-brackets`
+
+### 主要使用功能
+
+- ### 级块上色、快速识别代码块关系
+
+## `oderwat.indent-rainbow`
+
+### 主要使用功能
+
+- ### 段落上色、快速识别文本段落缩进、对齐（治疗强迫症）
+
+## `foxundermoon.shell-format`
+
+### 主要使用功能
+
+- ### 脚本、配置类文件格式化（`sh 、bash、 Dockerfile`）
+
+## `vscode-icons-team.vscode-icons` 
+
+### 主要使用功能
+
+- ### 美化文件夹、快速识别类别
+
+# 辅助类
+
+## `actboy168.tasks`
+
+### 主要使用功能
+
+- ### 快速运行tasks
