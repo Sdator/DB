@@ -1,5 +1,21 @@
 # minikube
 
+K8S
+储存 PV
+  - 动态存储 动态供给概念（Dynamic rovisioning）
+    - StorageClass
+  - 静态供给方式
+    - Static Provisioning
+
+创PVC时会动态自动创建PV
+
+
+
+什么是 PV, PVC, 为什么用 PV, PVC。
+  PV, Persistent Volume. PVC, Persistent Volume Claim. 个人感觉， PV 相当于一个【可用的 存储资源 】的描述文件，PVC 是对于某一类 app 的【存储需求】的描述。
+
+  通过 PV 和 PVC，可以把 app 对存储的需求进行抽象，存储端具体提供什么样的解决方案由运维负责， 而开发者不需要参与。同时，PV 和 PVC 可以解耦 app 和 存储， 有更高的灵活性。
+
 
 
 ## 配置代理
@@ -11,6 +27,10 @@ export HTTPS_PROXY=https://127.0.0.1:10001
 # 不应该走代理的ip段
 export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 
+
+$Env:http_proxy = "http://127.0.0.1:10000";$Env:https_proxy = "http://127.0.0.1:10000"
+
+# 把代理传入到容器中
 minikube start \
 --docker-env http_proxy=http://127.0.0.1:10001 \
 --docker-env https_proxy=http://127.0.0.1:10001 \
@@ -18,7 +38,7 @@ minikube start \
 
 ```
 
-- 
+-
 
 ## 查看基础信息
 
@@ -43,7 +63,7 @@ minikube start
 minikube start -p cluster2
 
 # 设置使用的虚拟驱动
-minikube start --vm-driver=hyperv 
+minikube start --vm-driver=hyperv
 
 # 国内启动minikube
 # 采用阿里云镜像站的资源下载
@@ -60,6 +80,26 @@ minikube start --vm-driver=virtualbox \
 # 使用containerd容器 也可以用docker
 --container-runtime=containerd
 
+minikube start \
+  --docker-env=HTTP_PROXY=$HTTP_PROXY \
+  --docker-env HTTPS_PROXY=$HTTPS_PROXY \
+  --docker-env NO_PROXY=$NO_PROXY \
+  --vm-driver=hyperv \
+  --image-mirror-country=cn \
+  --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
+  --container-runtime=containerd
+# bash
+minikube start \
+    --image-mirror-country=cn \
+    --container-runtime=containerd \
+    --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com \
+    --iso-url=https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.5.0.iso
+
+# powershell
+minikube start `
+--vm-driver=hyperv `
+--registry-mirror=https://im0hy9gl.mirror.aliyuncs.com `
+--iso-url=https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.5.1.iso
 ```
 
 
@@ -136,7 +176,7 @@ unset HTTP_PROXY
 ```
 
 ```powershell
-# powershell  
+# powershell
 # 临时生效
 $env:HTTP_PROXY="http://127.0.0.1:10001"
 $env:HTTPS_PROXY="htts://127.0.0.1:10001"
@@ -176,7 +216,7 @@ minikube start \
   - vmware (驱动安装) （VMware 统一驱动）
   - none (在主机上运行Kubernetes组件，而不是在 VM 中。使用该驱动依赖 Docker (安装 Docker) 和 Linux 环境)
 
-  
+
 
 ## W10端口转发
 
@@ -213,7 +253,7 @@ netsh interface portproxy del v4tov4 listenport=8086 listenaddress=172.24.98.47
 
 - 硬盘空间是否充足
 
-  
+
 
 # kubectl命令行
 
@@ -263,7 +303,7 @@ kubectl expose deployment first-deployment --port=80 --type=NodePort
 ```bash
 # 连接到容器中
 kubectl attach -it <name>
-kubectl attach -it cq-78c488ccdf-zljp6 
+kubectl attach -it cq-78c488ccdf-zljp6
 # 连接到容器中并执行命令
 kubectl exec -it cq-78c488ccdf-zljp6 sh
 kubectl exec -it cq-pod sh
@@ -411,25 +451,6 @@ minikube start --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com --image-re
 
 
 
-minikube start \
-  --docker-env=HTTP_PROXY=$HTTP_PROXY \
-  --docker-env HTTPS_PROXY=$HTTPS_PROXY \
-  --docker-env NO_PROXY=$NO_PROXY \
-  --vm-driver=hyperv \
-  --image-mirror-country=cn \
-  --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
-  --container-runtime=containerd
-
-minikube start \
-    --image-mirror-country=cn \
-    --container-runtime=containerd \
-    --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com \
-    --iso-url=https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.5.0.iso
-
-minikube start `
---vm-driver=hyperv `
---registry-mirror=https://im0hy9gl.mirror.aliyuncs.com `
---iso-url=https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.5.1.iso
 
 
 minikube cache add coolq/wine-coolq
@@ -458,16 +479,16 @@ ls env:HTT* | del
 
 ## start
 
-选项：`--kubernetes-version k8s版本`  
-用法：`--kubernetes-version v1.16.0`    
+选项：`--kubernetes-version k8s版本`
+用法：`--kubernetes-version v1.16.0`
 作用：使用指定版本的k8b
 
-选项：`--vm-driver=<enter_driver_name>`  
-用法：`--vm-driver=hyperv`    
+选项：`--vm-driver=<enter_driver_name>`
+用法：`--vm-driver=hyperv`
 作用：使用指定虚拟机
 
 ```bash
---vm-driver=hyperv          #指定虚拟驱动方式为微软的hyperv 
+--vm-driver=hyperv          #指定虚拟驱动方式为微软的hyperv
 --hyperv-virtual-switch     #hyperv虚拟交换机名称。默认为首次发现
 
 --network-plugin=cni \
@@ -508,16 +529,11 @@ eval $(minikube docker-env)
 env | grep HTTP_PROXY
 
 
-kubectl create deployment cq --image=coolq/wine-coolq 
+kubectl create deployment cq --image=coolq/wine-coolq
 --port=9000:9000 --type
--v `pwd`:/home/user/coolq 
+-v `pwd`:/home/user/coolq
 
 kubectl expose deployment cq --type=LoadBalancer --port=9000
 kubectl expose deployment cq --type=NodePort --port=9000
 kubectl delete svc cq
 ```
-
-
-
-
-
