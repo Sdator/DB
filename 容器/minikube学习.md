@@ -1,5 +1,6 @@
 # minikube
 
+<<<<<<< HEAD
 K8S
 储存 PV
   - 动态存储 动态供给概念（Dynamic rovisioning）
@@ -16,29 +17,79 @@ K8S
 
   通过 PV 和 PVC，可以把 app 对存储的需求进行抽象，存储端具体提供什么样的解决方案由运维负责， 而开发者不需要参与。同时，PV 和 PVC 可以解耦 app 和 存储， 有更高的灵活性。
 
+=======
+## 虚拟机
+
+- 网络类型
+  - host-only
+    - 主机模式、局域网隔离、在虚拟机中虚拟机出交换机（dhcp地址分配）
+  - 桥接模式
+    - 直接使用宿主机的网络、共享端口
+  - NTA模式
+    - 共享宿主机的网络
+
+
+
+>>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
 
 
 ## 配置代理
 
+- 直接设置环境变量即可传达给minikube
+
+#### bash
+
 ```bash
 # linux 环境变量配置 加入到 ~/.bashrc
 export HTTP_PROXY=http://127.0.0.1:10001
-export HTTPS_PROXY=https://127.0.0.1:10001
+export HTTPS_PROXY=http://127.0.0.1:10001
 # 不应该走代理的ip段
-export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+export NO_PROXY=$(minikube ip),localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 
+<<<<<<< HEAD
 
 $Env:http_proxy = "http://127.0.0.1:10000";$Env:https_proxy = "http://127.0.0.1:10000"
 
 # 把代理传入到容器中
+=======
+# 删除环境变量
+unset HTTPS_PROXY
+unset HTTP_PROXY
+
+# 启动时传递给docker守护进程
+>>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
 minikube start \
 --docker-env http_proxy=http://127.0.0.1:10001 \
 --docker-env https_proxy=http://127.0.0.1:10001 \
 --docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
-
 ```
 
+#### powershell
+
+```powershell
+# 临时生效
+$env:HTTP_PROXY="http://127.0.0.1:10001"
+$env:HTTPS_PROXY="http://127.0.0.1:10001"
+$env:NO_PROXY="$(minikube ip),localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24"
+
+# 启动时传递给docker守护进程
+minikube start `
+--docker-env http_proxy=http://127.0.0.1:10001 `
+--docker-env https_proxy=http://127.0.0.1:10001 `
+--docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+```
+
+<<<<<<< HEAD
 -
+=======
+
+
+
+
+
+
+
+>>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
 
 ## 查看基础信息
 
@@ -66,13 +117,25 @@ minikube start -p cluster2
 minikube start --vm-driver=hyperv
 
 # 国内启动minikube
-# 采用阿里云镜像站的资源下载
-# 加速器可以到阿里云获取加速地址
+# --image-repository 使用阿里docker备用映像存储库 registry.cn-hangzhou.aliyuncs.com/google_containers
+# --image-mirror-country 需要使用的镜像的国家/地区代码。默认使用全球国内可设为 cn
+# --registry-mirror 如果从dockerhub上获取镜像则使用阿里加速
 # 大陆用于镜像下载加速
+# --logtostderr 启用日志
 minikube start \
 --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers \
 --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com \
 --image-mirror-country=cn
+--iso-url="https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.13.0.iso"
+
+minikube start `
+--image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers `
+--registry-mirror=https://im0hy9gl.mirror.aliyuncs.com `
+--image-mirror-country=cn `
+--iso-url="https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.13.0.iso" 
+--logtostderr
+
+
 
 minikube start --vm-driver=virtualbox \
 --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
@@ -158,6 +221,7 @@ minikube ssh --native-ssh=false
 minikube mount $HOME:/host
 ```
 
+<<<<<<< HEAD
 
 
 ## 代理
@@ -185,6 +249,8 @@ $env:NO_PROXY="$(minikube ip),localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,1
 
 ```
 
+=======
+>>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
 ## 命令行
 
 ### 指定k8s版本
