@@ -1,7 +1,7 @@
 # 索尼XZs刷机教程
-+ 最近咸鱼了一台索尼XZs 港版 4+64 双卡版型号为 G8232, 因此以下教程适用于 G8232
++ 最近咸鱼了一台索尼XZs 港版 4+32 （对方说是4+64被坑了）双卡版型号为 G8232, 因此以下教程适用于 G8232
 + 以下操作会解锁你的手机导致 TA 分区丢失，会导致部分功能丢失如：超逼真、相机降噪算法消失..
-+ 请自行备份 TA 分区后再刷, 由于机主原先已经解锁了所以对我来说无所谓了。
++ 请自行备份 TA 分区后再刷, 由于机主原先已经解锁过了所以对我来说无所谓了。
 
 ## 科普
 
@@ -22,7 +22,7 @@
     + 手动下载 https://developer.android.com/studio/releases/platform-tools
 
 ## 电脑安装驱动
-+ Flashtool http://www.flashtool.net/downloads_windows.php
++ Flashtool【推荐】 http://www.flashtool.net/downloads_windows.php
 + Androxyde的驱动程序 https://github.com/Androxyde/Flashtool/tree/master/drivers  
 + 官方驱动 https://developer.sony.com/develop/drivers/
 
@@ -34,20 +34,36 @@
 
 
 
-## 强刷 41.3.A.2.247 固件 （无需解锁）
-1. 打开 Flashtool64 点击最右边的图标下载 XF（XperiFirm）
-2. 打开 XperiFirm 找到 Xperia XZs 选择 G8232 dual
+## 强刷 `41.3.A.2.247` 固件 （无需解锁）
+1. 打开 `Flashtool64` 点击最右边的图标下载 `XF（XperiFirm）`
+2. 打开 `XperiFirm` 找到 `Xperia XZs` 选择 `G8232 dual`
 3. 在列表中下载想要刷入的版本
-   
->当前时间为 2020.4.13 能搜到的最新版为 41.3.A.2.247 以上的步骤才有用  
+4. 刷机包下载好后，切换到`Flashtool64` 进行`ftf`打包，选择 Tools > bundles > Create` 
+   1. 第一栏选择`XperiFirm` 下载的刷机包所在路径
+   2. 第二栏选择你的型号
+   3. 第三栏填写地区英文缩写
+   4. 第四栏填写刷机包版本
+   5. 再往下方文件列表选中所有文件并点击右方的->箭头按钮添加所有文件到右边。
+   6. 最后点击Create创建，请耐心等待打包完毕。
+5. 打包完毕后点击软件主界面的工具栏左边的雷电图标，选择`Flashmode`点击`ok`。
+   1. 第一栏选择打包后的 `ftf`文件所在位置
+   2. 第二栏选择机型【如果Firmwares中已经显示了你的刷机包可不选】
+   3. 在Firmwares找到并选中你刚才打包的项目
+   4. 勾选 `Wipe Sin`下的所有选项清除这些分区。
+   5. 最后点击Flash开始刷机。
+6. 手机关机状态下按住音量键下（即减）再插入`USB`，等待刷机完毕即可。
+
+
+
+>当前时间为 2020.4.13 能搜到的最新版为 `41.3.A.2.247` 以上的步骤才有用  
 >但以后出更新了以上步骤获得的最新版不适合本教程的后续步骤，所以你得使用我提供的版本
 
 ## 解锁bl
-1. 进入索尼官网申请解锁码
-1. 进入 bootloader 模式解锁 俗称蓝灯
+1. 进入索尼官网申请`解锁码`
+1. 进入 `bootloader` 模式解锁 俗称蓝灯
     1. 手机关机
-    1. 按住音量键+ 插入 usb 蓝灯出现松手 正常一秒左右出现，如果你按太久都没蓝灯说明有问题 重来吧
-    1. 电脑键入 "fastboot ome 解锁码" 完成解锁
+    1. 按住音量键+ 插入 `usb` 蓝灯出现松手 正常一秒左右出现，如果你按太久都没蓝灯说明有问题 重来吧
+    1. 电脑键入 "`fastboot ome 解锁码`" 完成解锁
 
 ## 安装各种补丁
 + 电信补丁 4gvol
