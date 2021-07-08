@@ -37,7 +37,7 @@ EOF
 
 # 容器添加登录启动
 # CMD & PowerShell   taskschd.msc
-# schtasks /create /tn runDocker /ru system /RL HIGHEST /sc ONSTART /tr "wsl -u root -e service docker start"
+# schtasks /create /tn runDocker /ru system /RL HIGHEST /sc ONSTART /tr "wsl -u root -e sh -c 'service docker start'"
 runDocker() {
     echo 设置用户执行权限
     cat >/etc/sudoers.d/my <<EOF
