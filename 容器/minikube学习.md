@@ -1,41 +1,73 @@
-# minikube
+# 目录
 
-<<<<<<< HEAD
-K8S
-储存 PV
-  - 动态存储 动态供给概念（Dynamic rovisioning）
-    - StorageClass
-  - 静态供给方式
-    - Static Provisioning
+- [目录](#目录)
+  - [概念](#概念)
+    - [网络模式](#网络模式)
+    - [储存 PV](#储存-pv)
+  - [minikube](#minikube)
+    - [配置代理](#配置代理)
+      - [bash](#bash)
+      - [powershell](#powershell)
+    - [启动（Start）](#启动start)
+    - [查](#查)
+    - [删(delete)](#删delete)
+    - [缓冲(cache)](#缓冲cache)
+    - [配置](#配置)
+    - [文件共享](#文件共享)
+    - [代理](#代理)
+    - [命令行](#命令行)
+      - [指定 k8s 版本](#指定-k8s-版本)
+      - [指定 VM 驱动](#指定-vm-驱动)
+    - [W10 端口转发](#w10-端口转发)
+    - [报错解决](#报错解决)
+  - [kubectl 命令行](#kubectl-命令行)
+    - [创建](#创建)
+    - [容器互动](#容器互动)
+    - [公开服务](#公开服务)
+    - [声明式配置](#声明式配置)
+    - [查](#查-1)
+      - [节点（node）](#节点node)
+      - [容器集（POD）](#容器集pod)
+      - [部署（deployments）](#部署deployments)
+      - [服务（Service）](#服务service)
+      - [详细信息](#详细信息)
+      - [其他信息](#其他信息)
+    - [删（delete）](#删delete-1)
+  - [其他](#其他)
+    - [环境配置](#环境配置)
+  - [docker 安装报错](#docker-安装报错)
+  - [start](#start)
 
-创PVC时会动态自动创建PV
+## 概念
 
-
-
-什么是 PV, PVC, 为什么用 PV, PVC。
-  PV, Persistent Volume. PVC, Persistent Volume Claim. 个人感觉， PV 相当于一个【可用的 存储资源 】的描述文件，PVC 是对于某一类 app 的【存储需求】的描述。
-
-  通过 PV 和 PVC，可以把 app 对存储的需求进行抽象，存储端具体提供什么样的解决方案由运维负责， 而开发者不需要参与。同时，PV 和 PVC 可以解耦 app 和 存储， 有更高的灵活性。
-
-=======
-## 虚拟机
+### 网络模式
 
 - 网络类型
   - host-only
-    - 主机模式、局域网隔离、在虚拟机中虚拟机出交换机（dhcp地址分配）
+    - 主机模式、局域网隔离、在虚拟机中虚拟机出交换机（dhcp 地址分配）
   - 桥接模式
     - 直接使用宿主机的网络、共享端口
-  - NTA模式
+  - NTA 模式
     - 共享宿主机的网络
 
+### 储存 PV
 
+- 动态存储 动态供给概念（Dynamic rovisioning）
+  - StorageClass
+- 静态供给方式
+  - Static Provisioning
+- 创建 PVC 时会动态自动创建 PV
 
->>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
+**什么是 PV, PVC, 为什么用 PV, PVC。**
 
+> PV, Persistent Volume. PVC, Persistent Volume Claim. 个人感觉， PV 相当于一个【可用的 存储资源 】的描述文件，PVC 是对于某一类 app 的【存储需求】的描述。
+> 通过 PV 和 PVC，可以把 app 对存储的需求进行抽象，存储端具体提供什么样的解决方案由运维负责， 而开发者不需要参与。同时，PV 和 PVC 可以解耦 app 和 存储， 有更高的灵活性。
 
-## 配置代理
+## minikube
 
-- 直接设置环境变量即可传达给minikube
+### 配置代理
+
+- 直接设置环境变量即可传达给 minikube
 
 #### bash
 
@@ -43,30 +75,33 @@ K8S
 # linux 环境变量配置 加入到 ~/.bashrc
 export HTTP_PROXY=http://127.0.0.1:10001
 export HTTPS_PROXY=http://127.0.0.1:10001
+
 # 不应该走代理的ip段
 export NO_PROXY=$(minikube ip),localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 
-<<<<<<< HEAD
-
-$Env:http_proxy = "http://127.0.0.1:10000";$Env:https_proxy = "http://127.0.0.1:10000"
-
-# 把代理传入到容器中
-=======
 # 删除环境变量
 unset HTTPS_PROXY
 unset HTTP_PROXY
 
 # 启动时传递给docker守护进程
->>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
+# 把代理传入到容器中
 minikube start \
 --docker-env http_proxy=http://127.0.0.1:10001 \
 --docker-env https_proxy=http://127.0.0.1:10001 \
 --docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
+
+minikube start \
+--docker-env HTTP_PROXY=$HTTP_PROXY \
+--docker-env HTTPS_PROXY=$HTTPS_PROXY \
+--docker-env NO_PROXY=$NO_PROXY
 ```
 
 #### powershell
 
 ```powershell
+# 设置临时代理
+$Env:http_proxy = "http://127.0.0.1:10000";$Env:https_proxy = "http://127.0.0.1:10000"
+
 # 临时生效
 $env:HTTP_PROXY="http://127.0.0.1:10001"
 $env:HTTPS_PROXY="http://127.0.0.1:10001"
@@ -79,37 +114,13 @@ minikube start `
 --docker-env no_proxy=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 ```
 
-<<<<<<< HEAD
--
-=======
-
-
-
-
-
-
-
->>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
-
-## 查看基础信息
+### 启动（Start）
 
 ```bash
-# 检查群集状态
-minikube status
-# 查看IP
-minikube ip
 
-# 启用仪盘表 web管理页面
-minikube addons enable dashboard
-```
-
-
-
-## 启动
-
-```bash
 # 创建群集 也就是创建虚拟机
 minikube start
+
 # 创建第二个群集
 minikube start -p cluster2
 
@@ -121,53 +132,46 @@ minikube start --vm-driver=hyperv
 # --image-mirror-country 需要使用的镜像的国家/地区代码。默认使用全球国内可设为 cn
 # --registry-mirror 如果从dockerhub上获取镜像则使用阿里加速
 # 大陆用于镜像下载加速
-# --logtostderr 启用日志
+
+# --vm-driver=virtualbox          选择驱动
+# --logtostderr                   启用日志
+# --container-runtime=containerd  使用containerd容器 也可以用docker
+
+# bash 上运行
 minikube start \
 --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers \
 --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com \
 --image-mirror-country=cn
 --iso-url="https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.13.0.iso"
 
+# powershell 上运行
 minikube start `
 --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers `
 --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com `
 --image-mirror-country=cn `
---iso-url="https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.13.0.iso" 
+--iso-url="https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.13.0.iso"
 --logtostderr
 
-
-
-minikube start --vm-driver=virtualbox \
---image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
-
-# 使用containerd容器 也可以用docker
---container-runtime=containerd
-
-minikube start \
-  --docker-env=HTTP_PROXY=$HTTP_PROXY \
-  --docker-env HTTPS_PROXY=$HTTPS_PROXY \
-  --docker-env NO_PROXY=$NO_PROXY \
-  --vm-driver=hyperv \
-  --image-mirror-country=cn \
-  --image-repository=registry.cn-hangzhou.aliyuncs.com/google_containers
-  --container-runtime=containerd
-# bash
-minikube start \
-    --image-mirror-country=cn \
-    --container-runtime=containerd \
-    --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com \
-    --iso-url=https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.5.0.iso
-
-# powershell
 minikube start `
 --vm-driver=hyperv `
 --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com `
 --iso-url=https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.5.1.iso
+
 ```
 
+### 查
 
+```bash
+# 检查群集状态
+minikube status
+# 查看IP
+minikube ip
 
-## 删(delete)
+# 启用仪盘表 web管理页面
+minikube addons enable dashboard
+```
+
+### 删(delete)
 
 ```bash
 # 删除本地集群
@@ -183,22 +187,20 @@ minikube stop
 
 ```
 
-
-
-## 缓冲(cache)
+### 缓冲(cache)
 
 ```bash
 # 缓冲docker镜像
 minikube cache add ubuntu:16.04
+minikube cache add coolq/wine-coolq
+minikube cache add hello-world
 # 查看缓冲列表
 minikube cache list
 # 删除缓冲镜像
 minikube cache delete <image name>
 ```
 
-
-
-## 配置
+### 配置
 
 ```bash
 # 设置默认使用的虚拟驱动
@@ -209,9 +211,7 @@ minikube config set memory 4096
 
 ```
 
-
-
-## 文件共享
+### 文件共享
 
 ```bash
 # 共享文件夹到虚拟机
@@ -221,12 +221,9 @@ minikube ssh --native-ssh=false
 minikube mount $HOME:/host
 ```
 
-<<<<<<< HEAD
+### 代理
 
-
-## 代理
-
-- 直接设置环境变量即可传达给minikube
+- 直接设置环境变量即可传达给 minikube
 
 ```bash
 # linux
@@ -249,20 +246,16 @@ $env:NO_PROXY="$(minikube ip),localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,1
 
 ```
 
-=======
->>>>>>> df61c8ce539bbe8787cf011dd0596c24c6ab2b3c
-## 命令行
+### 命令行
 
-### 指定k8s版本
+#### 指定 k8s 版本
 
 ```bash
 minikube start \
 --kubernetes-version v1.19.0
 ```
 
-
-
-### 指定VM驱动
+#### 指定 VM 驱动
 
 ```bash
 minikube start \
@@ -280,11 +273,9 @@ minikube start \
 - 请注意，下面的 IP 是动态的，可以更改。可以使用 `minikube ip` 检索。
 
   - vmware (驱动安装) （VMware 统一驱动）
-  - none (在主机上运行Kubernetes组件，而不是在 VM 中。使用该驱动依赖 Docker (安装 Docker) 和 Linux 环境)
+  - none (在主机上运行 Kubernetes 组件，而不是在 VM 中。使用该驱动依赖 Docker (安装 Docker) 和 Linux 环境)
 
-
-
-## W10端口转发
+### W10 端口转发
 
 ```bash
 # 添加端口转发
@@ -305,25 +296,16 @@ netsh interface portproxy del v4tov4 listenport=8086 listenaddress=192.168.3.2
 netsh interface portproxy del v4tov4 listenport=8086 listenaddress=172.24.98.47
 ```
 
-
-
-
-
-## 报错解决
+### 报错解决
 
 - 内存预留是否足够
-
 - 命令行终端是否以管理员权限执行（右击管理员、sudo）
-
 - 网络是否畅通（代理、阿里镜像）
-
 - 硬盘空间是否充足
 
+## kubectl 命令行
 
-
-# kubectl命令行
-
-## 创建
+### 创建
 
 ```bash
 # 创建应用、从编排配置文件中创建
@@ -364,7 +346,7 @@ kubectl expose deployment first-deployment --port=80 --type=NodePort
 
 ```
 
-## 容器互动
+### 容器互动
 
 ```bash
 # 连接到容器中
@@ -379,7 +361,16 @@ kubectl exec cq-78c488ccdf-zljp6 env
 kubectl label pod $POD_NAME app=v1
 ```
 
-## 声明式配置
+### 公开服务
+
+```bash
+# 公开pod端口
+kubectl expose deployment cq --external-ip="172.17.0.26" --port=9000 --target-port=9000
+kubectl expose deployment cqa --external-ip="127.0.0.1" --port=9000 --target-port=900
+```
+
+### 声明式配置
+
 ```bash
 #把某个类型po svc deploy转为yaml 对象需要后期处理
 kubectl get <kind>/<name> -o yaml > <kind>_<name>.yaml
@@ -392,9 +383,9 @@ kubectl replace -f <kind>_<name>.yaml
 kubectl replace --save-config -f 123.yaml
 ```
 
-## 查
+### 查
 
-### 节点（node）
+#### 节点（node）
 
 ```bash
 # 查看节点  也就是虚拟机或实体机
@@ -403,7 +394,8 @@ kubectl get nodes
 # 为节点添加标签
 kubectl label nodes <your-node-name> disktype=ssd
 ```
-### 容器集（POD）
+
+#### 容器集（POD）
 
 ```bash
 # 查看pods
@@ -424,7 +416,8 @@ kubectl get pods --selector="run=load-balancer-example" --output=wide
 # 更新pod副本数量
 kubectl scale -n default deployment cq --replicas=1
 ```
-### 部署（deployments）
+
+#### 部署（deployments）
 
 ```bash
 #获取部署的应用 等同 docker ps
@@ -435,14 +428,16 @@ kubectl get deployments
 kubectl get replicasets
 kubectl describe replicasets
 ```
-### 服务（Service）
+
+#### 服务（Service）
+
 ```bash
 kubectl get svc
 kubectl get services
 kubectl get services -l run=cq        服务器
 ```
 
-### 详细信息
+#### 详细信息
 
 ```bash
 # 查看详细信息
@@ -457,9 +452,7 @@ kubectl describe svc cqa
 kubectl describe services example-service
 ```
 
-
-
-### 其他信息
+#### 其他信息
 
 ```bash
 # 查看客户端和服务端版本
@@ -477,19 +470,10 @@ kubectl cluster-info
 
 # 查看仪盘表启动进度
 # 查看kube-system名称空间中的Pod
-kubectl get pods -n kube-system  -w
+kubectl get pods -n kube-system  -
 ```
 
-### 公开服务
-
-
-```bash
-# 公开pod端口
-kubectl expose deployment cq --external-ip="172.17.0.26" --port=9000 --target-port=9000
-kubectl expose deployment cqa --external-ip="127.0.0.1" --port=9000 --target-port=900
-```
-
-## 删（delete）
+### 删（delete）
 
 ```bash
 # 要删除服务，请输入以下命令：
@@ -502,43 +486,31 @@ kubectl delete deployment cq
 kubectl delete po cq-78c488ccdf-zljp6
 ```
 
-# 其他
+## 其他
 
-```bash
+### 环境配置
 
-1. eval $(minikube docker-env --shell bash)
-1. eval $(minikube docker-env --shell powershell)
+```shell
+eval $(minikube docker-env)
+eval $(minikube docker-env --shell bash)
+eval $(minikube docker-env --shell powershell)
 
-
-export
-
-minikube start --docker-env=HTTP_PROXY=$HTTP_PROXY --docker-env HTTPS_PROXY=$HTTPS_PROXY --docker-env NO_PROXY=$NO_PROXY --vm-driver=hyperv --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-minikube start --registry-mirror=https://im0hy9gl.mirror.aliyuncs.com --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-
-
-
-
-
-minikube cache add coolq/wine-coolq
-minikube cache add hello-world
-
-
+# 删除环境变量
 del env:HTTP_PROXY,HTTPS_PROXY
-
 del env:HTTPS_PROXY
 
+# 批量删除环境变量
 ls env:HTT* | del
+
+# 查看代理
+env | grep HTTP_PROXY
 
 ```
 
-
-
-## docker安装报错
+## docker 安装报错
 
 1. 原因是卸载不干净有残余注册表
-
 2. 关闭安装进程
-
 3. 进入注册表编辑器：WIN+R，输入 regedit，回车
 4. 建议在以下操作前先备份注册表：文件->导出
 5. 找到 Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Docker for Windows 并删除
@@ -547,7 +519,7 @@ ls env:HTT* | del
 
 选项：`--kubernetes-version k8s版本`
 用法：`--kubernetes-version v1.16.0`
-作用：使用指定版本的k8b
+作用：使用指定版本的 k8b
 
 选项：`--vm-driver=<enter_driver_name>`
 用法：`--vm-driver=hyperv`
@@ -569,20 +541,11 @@ ls env:HTT* | del
 --bootstrapper=kubeadm
 --wait=false                # 直到启动成功
 
-minikube start \
---docker-env HTTP_PROXY=$HTTP_PROXY \
---docker-env HTTPS_PROXY=$HTTPS_PROXY \
---docker-env NO_PROXY=$NO_PROXY \
---image-mirror-country cn \
---vm-driver=hyperv
-
-
 # 国内用 有效
 minikube start \
 --vm-driver=hyperv \
 --registry-mirror https://im0hy9gl.mirror.aliyuncs.com \
 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
-
 
 minikube start \
 --image-mirror-country cn \
@@ -590,13 +553,9 @@ minikube start \
 --registry-mirror https://im0hy9gl.mirror.aliyuncs.com
 --image-repository registry.cn-hangzhou.aliyuncs.com/google_containers
 
-eval $(minikube docker-env)
-
-env | grep HTTP_PROXY
-
-
-kubectl create deployment cq --image=coolq/wine-coolq
---port=9000:9000 --type
+kubectl create deployment cq \
+--image=coolq/wine-coolq \
+--port=9000:9000 --type \
 -v `pwd`:/home/user/coolq
 
 kubectl expose deployment cq --type=LoadBalancer --port=9000
