@@ -12,6 +12,11 @@ adb unroot  # 在没有root权限的情况下重新启动adbd
 adb disable-verity # 禁止dm-verity检查
 adb remount # 读写方式重新挂载
 
+# 重启到 boot
+# reboot 可选参数 [bootloader|recovery|sideload|sideload-auto-reboot]
+adb reboot bootloader
+# 重启到 ADB刷机模式 需要 （adb root）
+adb reboot sideload
 ```
 
 ## shell
