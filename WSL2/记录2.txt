@@ -1,0 +1,65 @@
+
+# 停止防火墙
+service firewalld stop
+firewall-cmd --permanent --add-port=12501/tcp
+firewall-cmd --reload
+
+#  查看命令历史记录
+history | grep service
+
+# 如果只想搜索 IUS 源里的软件，不同时搜索其它软件源，用下面命令。
+yum --disablerepo="*" --enablerepo="ius" search
+
+
+
+ps fu -u root
+kill -9 10171
+# 使用第三行的数值作为大小排列 取出顶部的十行内容
+ps aux | sort -k 3 -rn | head
+
+
+Ubuntu
+	update-rc.d		添加开机执行脚本	代替品 chkconfig
+
+
+service 命令实际是调用 /etc/init.d/
+
+
+docker exec -it v2ray /usr/local/bin/v2ray --test /work/config.json
+docker exec -it v2ray /usr/local/bin/v2ray -config /work/config.json
+docker exec -it v2ray date
+
+docker-compose up --force-recreate --always-recreate-deps
+docker exec -it v2ray ls -l /usr/local/bin/
+
+
+loaded failed failed  Docker Application Container Engine
+
+
+
+
+service docker start
+service docker status
+systemctl status docker.service
+systemctl start docker.service
+
+
+
+# 日志管理 当 systemctl可用时会生成日志文件 journalctl 就可用
+journalctl -xe
+journalctl -u docker.service | tail
+
+
+
+
+
+
+# 服務管理
+service
+systemctl
+sysv-rc-conf		需要另外安装
+
+systemctl list-units --type=service
+
+
+DOCKER_HOST=tcp://172.25.189.213:2375
