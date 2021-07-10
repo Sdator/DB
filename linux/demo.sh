@@ -13,7 +13,15 @@ delip() {
         # ip addr del "${ip}" broadcast "${broadcast}" dev eth0
         echo "ip addr del $(echo "${str}" | awk -F "-" '{print $1}') broadcast $(echo "${str}" | awk -F "-" '{print $2}') dev eth0"
     done
+}
+delipA() {
+    addr=$(ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}')
+    echo "$addr" | xargs -I AA sh -c "ip addr del \$(echo AA | awk -F - '{print \$1}') broadcast \$(echo AA | awk -F - '{print \$2}') dev eth0"
+}
 
+routeSet() {
+    # 设置默认路由
+    ip route add default 172.17.0.1
 }
 
 # 设置用户执行权限
@@ -41,8 +49,6 @@ EOF
 # schtasks /create /tn runDocker /RL HIGHEST /sc ONSTART /tr "wsl -u root -e sh -c 'service docker start'"
 # schtasks /create /tn runDocker /RL HIGHEST /sc ONSTART /tr "powershell -windowstyle hidden -command wsl -u root -e sh -c 'service docker start'"
 
-
-
 runDocker() {
     echo 设置用户执行权限
     cat >/etc/sudoers.d/my <<EOF
@@ -69,22 +75,28 @@ cat /etc/profile.d/my.sh
 # cut
 # wsl -e ip addr show eth0
 # ip addr show eth0 | grep "10\b" | awk '{print $2"-"$4}' |
-#     ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo "$(echo \$str)"; done"
-# ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo \"ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0\"; done"
+ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo "$(echo \$str)"; done"
+# ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo \"ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0\"; done"
+# ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo \"ip addr add \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0\"; done"
+
 
 # ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0; done"
 
 # ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0; done"
 
 # # 1
-# ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | ip addr del $(echo \$str | awk -F - '{print $1}') broadcast $(echo \$str | awk -F - '{print $2}') dev eth0
+# ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | ip addr del $(echo \$str | awk -F - '{print $1}') broadcast $(echo \$str | awk -F - '{print $2}') dev eth0
 
 # ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | echo "ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0"
 
 # # 2
 # ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "echo ip addr del \$(echo AA | awk -F - '{print \$1}') broadcast \$(echo AA | awk -F - '{print \$2}') dev eth0"
 # # 3
-# ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "ip addr del \$(echo AA | awk -F - '{print \$1}') broadcast \$(echo AA | awk -F - '{print \$2}') dev eth0"
+# ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "ip addr del \$(echo AA | awk -F - '{print \$1}') broadcast \$(echo AA | awk -F - '{print \$2}') dev eth0"
+
+# echo "172.17.2.218/20-172.17.15.255" | xargs -I AA sh -c "ip addr add \$(echo AA | awk -F - '{print \$1}') broadcast \$(echo AA | awk -F - '{print \$2}') dev eth0"
+
+# ip route add default 172.17.0.1
 
 # ip addr add 10.0.0.1/10 broadcast 10.0.0.255 dev eth0
 # ip addr add 10.0.0.2/10 broadcast 10.0.0.255 dev eth0
