@@ -59,7 +59,6 @@ EOF
     echo 登录启动容器服务
     # 登录启动容器服务
     cat >/etc/profile.d/my.sh <<EOF
-
 #!/bin/sh
 # 如果容器没有运行就执行命令
 sudo service docker status || sudo service docker start
@@ -78,6 +77,12 @@ cat /etc/profile.d/my.sh
 ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo "$(echo \$str)"; done"
 # ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo \"ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0\"; done"
 # ip addr show eth0 | grep "inet\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo \"ip addr add \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0\"; done"
+
+ip addr add \
+$(ip route | head -1 | awk '{printf "%s00/32",$3}') \
+broadcast \
+$(ip addr show eth0 | grep 'inet\b' | awk '{printf $4}') \
+dev eth0
 
 
 # ip addr show eth0 | grep "inet 10\b" | awk '{print $2"-"$4}' | xargs -I AA sh -c "for str in AA; do echo ip addr del \$(echo \$str | awk -F - '{print \$1}') broadcast \$(echo \$str | awk -F - '{print \$2}') dev eth0; done"
