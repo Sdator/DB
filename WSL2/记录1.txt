@@ -74,16 +74,16 @@ ip addr show eth0 | grep "inet\b" | awk '{print $2,$4}' | xargs -tI % sh -c "ech
 ip addr show eth0 | grep "inet\b" | awk '{print $2,$4}' | xargs -tI % sh -c "echo %|cut -d 1"
 
 
+ip addr show eth0 | grep "inet\b" | awk '{print $2,$4}' | xargs -pi echo $'ip addr del $(awk \'{print $1}\') broadcast $(awk \'{print $2}\') dev eth0'
+
+
 
 
 "awk '{print $1} %"
 
 
 
-ip addr show eth0 | grep "inet\b" | awk '{print $2,$4}' | xargs -n 1
-
- {awk '{print $1}'}
-
+ip addr show eth0 | grep "inet\b" | awk '{print $2,"\t",$4}' | xargs -d "\t" -I {} sh -c $'echo "{}" | ip addr del $(awk \'{print $1}\') broadcast $(awk \'{print $2}\') dev eth0'
 
 
 

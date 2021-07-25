@@ -1,0 +1,86 @@
+
+重要路径
+/etc/systemd/system/ 系统服务
+/var/run/ 运行中程序
+/var/run/docker.sock
+
+    /usr/bin/dockerd        容器服务
+
+    docker.server
+        ExecStart = /usr/bin/dockerd -H fd: //
+
+    docker.socks
+
+
+
+firewall-cmd --permanent --add-service=ssh
+
+curl https://oc1.gawrgura.xyz
+
+
+ip addr add $(ip route | head -1 | awk '{printf '%s00/32',$3}') broadcast $(ip addr show eth0 | grep 'inet\b' | awk '{printf $4}') dev eth0
+
+
+echo \$(ip route | head -1 | awk '{printf \"%s00/32\",\$3}')
+
+ip addr show eth0 | grep 'inet\b' | awk '{printf $4}'
+
+
+wsl -u root -e ls /root/.bashrc
+wsl -e ip addr show eth0
+
+chmod +x /etc/profile/
+
+
+echo "ip addr add \$(ip route | head -1 | awk '{printf \"%s00/32\",\$3}') broadcast \$(ip addr show eth0 | grep 'inet\b' | awk '{printf \$4}') dev eth0" > /etc/profile.d/addIP.sh
+echo "ip addr add \$(ip route | head -1 | awk '{printf \"%s00/32\",\$3}') broadcast \$(ip addr show eth0 | grep 'inet\b' | awk '{printf \$4}') dev eth0" >> ~/.bashrc
+
+
+chmod +x /etc/
+    -rw-r--r--
+    -rwxr-xr-x
+
+echo "\$(ip addr show eth0 | grep 'inet\b' | awk '{printf \$4}')" > 1.txt
+
+
+Usage: ip address {add|change|replace} IFADDR dev IFNAME [ LIFETIME ]
+
+
+# 寻找所有数字开头的条目
+ip link | grep -E '^[0-9]'
+
+
+
+# 查看内存信息
+cat /proc/meminfo
+
+dnf module list nodejs
+sudo yum install yarn
+
+export LINUX_DASH_SERVER_HOST=127.0.0.1
+
+# 查看端口占用
+lsof -i:12402
+lsof -i:12500
+
+# linux面板 指定地址和端口
+node /work/linux-dash-master/app/server/index.js --host=127.0.0.1 --port=12500
+
+
+curl 127.0.0.1:12401
+curl oc3.gawrgura.xyz:443
+curl oc3.gawrgura.xyz:12500
+
+
+proxy_header Host {host}
+      proxy_header X-Real-IP {remote}
+      proxy_header X-Forwarded-Proto {scheme}
+
+# caddy运行 实时监测配置文件修改
+caddy run -config /etc/caddy/Caddyfile --watch
+
+
+$(ip addr show ens3 | grep 'inet\b' | awk '{printf $4}')
+
+# 运行并编译
+docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp -e GOOS=windows -e GOARCH=386 golang:1.16 go build -v

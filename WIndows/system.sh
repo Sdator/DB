@@ -3,17 +3,20 @@ serverlist="$(sc queryex)"
 
 # 接口 获取服务或显示名字
 echoName() {
-    name="$(echo "$serverlist" | grep "$1" | awk '{print $2}')"
+    # sc queryex | grep "SERVICE_NAME"
+    # NR 行号 计数器
+    # NF 分段数量
+    name="$(echo "$serverlist" | grep "$1" | awk - '{print $2}')"
     echo "$name"
 }
 
 # 获取所有服务名称
-GetAllServiceName() {
+GetServiceNameAll() {
     echoName SERVICE_NAME
 }
 
 # 获取所有显示名称
-GetAllDisplayName() {
+GetDisplayNameAll() {
     echoName DISPLAY_NAME
 }
 
@@ -25,7 +28,7 @@ GetServiceExec() {
 }
 
 # 获取所有服务的执行命令
-GetAllServiceExec() {
+GetServiceExecAll() {
     GetAllServiceName
     for item in $name; do
         echo "${item}"
@@ -39,9 +42,8 @@ GetServiceName() {
 }
 # GetServiceName "Security Center"
 # echo "$serviceName"
-
-GetServiceExec WSearch
-
+GetServiceNameAll
+# GetServiceExec WSearch
 
 # SERVICE_NAME: WpnUserService_34c4a
 # DISPLAY_NAME: WpnUserService_34c4a
