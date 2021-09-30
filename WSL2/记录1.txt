@@ -108,7 +108,7 @@ ip addr show eth0 | grep "inet\b" | awk '{print $2}'
 find . -name "*.log" -print0 | xargs
 
 
-
+find /default.prop -name "hosts" -type f
 
 
 ip addr del $(awk '{print $1}') broadcast $(awk '{print $1}') dev eth0
