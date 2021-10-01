@@ -84,7 +84,7 @@ PrintSetting
 
 TypeName:Microsoft.WindowsSearch.Commands.PrintSetting
 
-Get-WindowsSearchSetting |gm
+Get-WindowsSearchSetting | gm
 
 Set-WindowsSearchSetting -Setting
 
@@ -107,3 +107,12 @@ Select-Object -Property Name, @{
     label      = 'FreeSpace'
     expression = { ($_.FreeSpace / 1GB).ToString('F2') }
 }
+
+
+
+# 获取指定位置项目的内容
+# 从文件中获得内容
+
+"a\nb\nc" | Get-Content 
+
+help Get-Content -Online

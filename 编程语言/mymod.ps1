@@ -80,3 +80,5 @@ $xl = New-Object -ComObject Excel.Application -Strict
 # gm的两种用法
 $a = 1, 2, "three"; Get-Member -InputObject $a # 输出对象数组
 1, 2, "three" | Get-Member # 每个对象单独输出
+
+
