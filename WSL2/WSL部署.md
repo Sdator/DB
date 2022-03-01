@@ -7,6 +7,7 @@
   - [安装](#安装)
   - [运行、停止、删除](#运行停止删除)
   - [切换版本](#切换版本)
+  - [修改系统语言为中文](#修改系统语言为中文)
   - [旧版 Windows 系统升级 WSL2 方法](#旧版-windows-系统升级-wsl2-方法)
   - [可用发行版](#可用发行版)
   - [参考](#参考)
@@ -81,9 +82,12 @@ wsl -d <发行版名称>
 
 # 停止指定的发行版
 wsl -t <发行版名称>
+# 停止所有正在运行的发行版
+wsl --shutdown
 
 # 从系统中删除发行版
 wsl --unregister <发行版名称>
+
 ```
 
 ## 切换版本
@@ -96,6 +100,35 @@ wsl --set-version Ubuntu-20.04 2
 ```
 
 >首先输入命令查看当前版本 `wsl -l -v`，如果 `VERSION` 输出为 `1` 则输入 `wsl --set-version <发行版名字> 2` 切换到 `wsl 2.0`，等待几分钟即可
+
+## 修改系统语言为中文
+
+- 查看当前系统设置的语言：locale
+- 查看当前系统支持的语言：locale -a
+
+```bash
+# 生成语言环境
+sudo locale-gen zh_CN.UTF-8
+
+# 设置语言
+sudo update-locale LANG=zh_CN.UTF-8
+
+# 重启wsl 以下三种方法随便运行一条即可 管理员身份运行
+wsl -t <发行版名称>                           # 停止发行版  (PowerShell)
+net stop LxssManager && net start LxssManager # 重启服务    (cmd)
+Restart-Service LxssManager                   # 重启服务    (PowerShell)
+
+# 测试日期是否显示为中文格式
+date
+
+# 以上方法如果没有效果请尝试以下操作
+# 另外需要注意你的 ~/.profile ~/.bashrc ~/.bash_profile 中是否设置了语言
+sudo dpkg-reconfigure locales
+sudo locale-gen zh_CN
+sudo locale-gen zh_CN.UTF-8
+sudo update-locale LANG="zh_CN.UTF-8" LANGUAGE="zh_CN"  # 设置完后记得重启wsl
+
+```
 
 ## 旧版 Windows 系统升级 WSL2 方法
 
@@ -134,5 +167,10 @@ Ubuntu-20.04    Ubuntu 20.04 LTS
 
 ## 参考
 
-- <https://docs.microsoft.com/zh-cn/windows/wsl/install>
-- <https://docs.microsoft.com/zh-cn/windows/wsl/install-manual>
+- 安装方法
+  - https://docs.microsoft.com/zh-cn/windows/wsl/install
+  - https://docs.microsoft.com/zh-cn/windows/wsl/install-manual
+- 详细命令：
+  - https://docs.microsoft.com/en-us/windows/wsl/basic-commands
+- WSL 常见问题
+  - https://docs.microsoft.com/en-us/windows/wsl/faq
