@@ -135,3 +135,13 @@ docker run hello-world
 ```bash
 systemctl enable docker
 ```
+
+## docker 命令转换 docker-compose 编排文档
+
+参考
++ 教程
+  + https://www.appinn.com/composerize-for-docker-compose/
+  + https://www.ioiox.com/archives/125.html
++ 工具
+  + 在线转换 https://www.composerize.com/?utm_source=appinn.com
+  + 命令行 https://github.com/magicmark/composerize
