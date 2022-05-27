@@ -34,6 +34,18 @@
 
 > 如果运行的是 Windows 10 版本1903 或 1909，请在 Windows 菜单中打开“设置”，导航到“更新和安全性”，然后选择“检查更新”。 内部版本号必须是 18362.1049+ 或 18363.1049+，次要内部版本号需要高于 .1049。 阅读详细信息：WSL 2 即将支持 Windows 10 版本 1903 和 1909。
 
+## 一次部署过程
+
+1. 确认在主板 BIOS 里开启了虚拟化
+1. 设置 wsl2 为默认配置
+    - `wsl --set-default-version 2`
+1. 列出支持的发行版(系统、分发)
+    - `wsl -l -o`
+1. 安装分发 (无参默认安装 ubuntu)
+    - `wsl --install [分发]`
+1. 系统语言本土化 可选
+   - [修改系统语言为中文](#修改系统语言为中文)
+
 ## 查看
 
 ```powershell
@@ -52,7 +64,7 @@ wsl --list --running
 ## 安装
 
 - 设置默认安装版本 建议运行一次 当然你要符合使用 [WSL 2 系统要求](#wsl-2-系统要求)
-- wsl --set-default-version 2
+  - wsl --set-default-version 2
 
 ```powershell
 # 默认安装的是 Ubuntu 20.04 LTS & WSL 1.0 建议先设定 WSL 默认版本为 2.0
@@ -113,10 +125,12 @@ sudo locale-gen zh_CN.UTF-8
 # 设置语言
 sudo update-locale LANG=zh_CN.UTF-8
 
-# 重启wsl 以下三种方法随便运行一条即可 管理员身份运行
-wsl -t <发行版名称>                           # 停止发行版  (PowerShell)
+# 重启wsl
+# 最简单的又能让语言生效的方法是在一个新的窗口中运行 wsl
+# 以下三种方法随便运行一条即可 管理员身份运行
+wsl -t <发行版名称> # 停止发行版  (PowerShell)
 net stop LxssManager && net start LxssManager # 重启服务    (cmd)
-Restart-Service LxssManager                   # 重启服务    (PowerShell)
+Restart-Service LxssManager # 重启服务    (PowerShell)
 
 # 测试日期是否显示为中文格式
 date
@@ -168,9 +182,9 @@ Ubuntu-20.04    Ubuntu 20.04 LTS
 ## 参考
 
 - 安装方法
-  - https://docs.microsoft.com/zh-cn/windows/wsl/install
-  - https://docs.microsoft.com/zh-cn/windows/wsl/install-manual
+  - <https://docs.microsoft.com/zh-cn/windows/wsl/install>
+  - <https://docs.microsoft.com/zh-cn/windows/wsl/install-manual>
 - 详细命令：
-  - https://docs.microsoft.com/en-us/windows/wsl/basic-commands
+  - <https://docs.microsoft.com/en-us/windows/wsl/basic-commands>
 - WSL 常见问题
-  - https://docs.microsoft.com/en-us/windows/wsl/faq
+  - <https://docs.microsoft.com/en-us/windows/wsl/faq>
