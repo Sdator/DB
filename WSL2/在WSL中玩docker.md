@@ -14,10 +14,15 @@
 
 + 此安装方式只适合用于测试环境下使用，切勿部署到生产环境
 
+下载并安装
+
 ```bash
-#下载并安装
 > curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
-# 启动容器服务
+ ```
+
+启动容器服务
+
+```bash
 > service docker start
  ```
 
@@ -69,14 +74,14 @@ EOF
 重启容器
 
 ```bash
-sudo service docker restart
+> sudo service docker restart
 ```
 
 检测监听端口是否正确
 
 ```bash
-sudo apt install
-sudo netstat -lntp | grep dockerd
+> sudo apt install
+> sudo netstat -lntp | grep dockerd
 ```
 
 ### daemon.json 配置说明
@@ -99,19 +104,52 @@ sudo netstat -lntp | grep dockerd
 "iptables": false
 ```
 
+## 宿主机远程管理容器服务
+
+### 安装docker-cli
+
+手动下载【自行配置环境变量】：<https://download.docker.com/win/static/stable/x86_64/>
+
+or
+
+scoop 安装方式
+
+```powershell
+> scoop install docker
+```
+
+设置环境变量
+
+```powershell
+ [environment]::SetEnvironmentvariable("DOCKER_HOST", "[::1]:2333", "User")
+```
+
+or
+
+```powershell
+ [environment]::SetEnvironmentvariable("DOCKER_HOST", "localhost:2333", "User")
+```
+
+测试是否能查看远端服务
+
+```powershell
+> docker ps
+```
+
 ## 问题
 
 ### localhost
 
 + 可通过 localhost 访问子系统中的服务
 + localhost 会被解析为 ipv6 [::1] 而无需做端口映射或修改 hosts
++ Win7\XP下的 localhost是`127.0.0.1`，而W10是 `[::1]`【这是个大坑】
 
 ### vscode 连接远程容器
 
 在设置中添加 ：
 `"docker.host": "tcp://[::1]:2223"`
 
->正常情况下以为填 localhost 即可,谁知道容器居然没有把服务映射到 ipv4 上面，这个可以从监听端口上看到。
+正常情况下以为填 `localhost` 即可, 但因为一些特殊情况 `localhost` 被解析为`127.0.0.1` 的`IPV4`地址,会导致服务无法连上，原因是 wsl2 只监听了服务的 `ipv6` 地址而没有做 `ipv4` 地址的监听，这个可以从监听端口上看到。
 
 ### ipv4 偷跑？
 
@@ -122,3 +160,11 @@ sudo netstat -lntp | grep dockerd
 最后通过`禁用\开启`本地虚拟网卡和`重置网络`解决了。【用魔法打败魔法】
 
 > 错误信息 ping: baidu.com: Temporary failure in name resolution
+
+## 参考
+
+<https://github.com/Sdator/DB/blob/master/WSL2/WSL2%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B.md>
+
+<https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user>
+
+<https://docs.docker.com/engine/security/rootless/>
