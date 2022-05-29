@@ -1,26 +1,18 @@
 # WSL2 下玩容器
 
-+ 权限不足的自己不上 sudo
-
-## 部署
-
-【推荐原生方法安装】
-<https://docs.docker.com/engine/install/debian/#install-using-the-repository>
-
-【 docker for window 】
-<https://docs.microsoft.com/zh-cn/windows/wsl/tutorials/wsl-containers>
++ 权限不足的自己补上 sudo 命令
 
 ## 安裝【这里用原生方法】
 
 + 此安装方式只适合用于测试环境下使用，切勿部署到生产环境
 
-下载并安装
+下载并安装：
 
 ```bash
 > curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
  ```
 
-启动容器服务
+启动容器服务：
 
 ```bash
 > service docker start
@@ -59,7 +51,7 @@ goto :eof
 
 ## 容器开启远程服务
 
-复制到终端中执行
+复制到终端中执行：
 
 ```bash
 # 新版测试能用  如果报错尝试添加  "iptables": false
@@ -71,13 +63,13 @@ cat > /etc/docker/daemon.json <<EOF
 EOF
 ```
 
-重启容器
+重启容器：
 
 ```bash
 > sudo service docker restart
 ```
 
-检测监听端口是否正确
+检测监听端口是否正确：
 
 ```bash
 > sudo apt install
@@ -86,13 +78,13 @@ EOF
 
 ### daemon.json 配置说明
 
-打开远程服务
+打开远程服务：
 
 ```json
 "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2378"]
 ```
 
-国内镜像加速
+国内镜像加速：
 
 ```json
 "registry-mirrors": ["https://registry.docker-cn.com"],
@@ -108,17 +100,18 @@ EOF
 
 ### 安装docker-cli
 
-手动下载【自行配置环境变量】：<https://download.docker.com/win/static/stable/x86_64/>
+手动下载【自行配置环境变量】：
+<https://download.docker.com/win/static/stable/x86_64/>
 
 or
 
-scoop 安装方式
+scoop 安装方式：
 
 ```powershell
 > scoop install docker
 ```
 
-设置环境变量
+设置环境变量：
 
 ```powershell
  [environment]::SetEnvironmentvariable("DOCKER_HOST", "[::1]:2333", "User")
@@ -130,7 +123,7 @@ or
  [environment]::SetEnvironmentvariable("DOCKER_HOST", "localhost:2333", "User")
 ```
 
-测试是否能查看远端服务
+测试是否能查看远端服务：
 
 ```powershell
 > docker ps
@@ -163,8 +156,12 @@ or
 
 ## 参考
 
-<https://github.com/Sdator/DB/blob/master/WSL2/WSL2%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B.md>
-
-<https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user>
-
-<https://docs.docker.com/engine/security/rootless/>
++ Linux 原生方法安装【推荐】：
+  + <https://docs.docker.com/engine/install/debian/#install-using-the-repository>
++ docker for window：
+  + <https://docs.microsoft.com/zh-cn/windows/wsl/tutorials/wsl-containers>
++ W10 下 WSL2 安装教程：
+  + <https://github.com/Sdator/DB/blob/master/WSL2/WSL2%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B.md>
++ 配置细节：
+  + <https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user>
+  + <https://docs.docker.com/engine/security/rootless/>

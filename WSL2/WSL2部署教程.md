@@ -11,10 +11,10 @@
     - [切换版本](#切换版本)
     - [旧版 Windows 系统升级 WSL2 方法](#旧版-windows-系统升级-wsl2-方法)
     - [可用发行版](#可用发行版)
-    - [参考](#参考)
   - [分发本土化（中文）](#分发本土化中文)
-    - [为中文版man帮助信息](#为中文版man帮助信息)
+    - [安装中文版 man 帮助信息](#安装中文版-man-帮助信息)
     - [修改系统语言为中文](#修改系统语言为中文)
+  - [参考](#参考)
 
 ## WSL 2 系统要求
 
@@ -62,8 +62,6 @@ wsl -l -o
 
 # 查看当前正在运行的发行版
 wsl --list --running
-
-
 ```
 
 ### 安装
@@ -152,19 +150,10 @@ Ubuntu-18.04    Ubuntu 18.04 LTS
 Ubuntu-20.04    Ubuntu 20.04 LTS
 ```
 
-### 参考
-
-- 安装方法
-  - <https://docs.microsoft.com/zh-cn/windows/wsl/install>
-  - <https://docs.microsoft.com/zh-cn/windows/wsl/install-manual>
-- 详细命令：
-  - <https://docs.microsoft.com/en-us/windows/wsl/basic-commands>
-- WSL 常见问题
-  - <https://docs.microsoft.com/en-us/windows/wsl/faq>
 
 ## 分发本土化（中文）
 
-### 为中文版man帮助信息
+### 安装中文版 man 帮助信息
 
 ```bash
 sudo apt install manpages-zh -y
@@ -200,3 +189,13 @@ sudo locale-gen zh_CN.UTF-8
 sudo update-locale LANG="zh_CN.UTF-8" LANGUAGE="zh_CN"  # 设置完后记得重启wsl
 
 ```
+
+## 参考
+
+- 安装方法：
+  - <https://docs.microsoft.com/zh-cn/windows/wsl/install>
+  - <https://docs.microsoft.com/zh-cn/windows/wsl/install-manual>
+- 详细命令：
+  - <https://docs.microsoft.com/en-us/windows/wsl/basic-commands>
+- WSL 常见问题：
+  - <https://docs.microsoft.com/en-us/windows/wsl/faq>
