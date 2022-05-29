@@ -4,6 +4,9 @@
   - [WSL 2 系统要求](#wsl-2-系统要求)
   - [环境信息](#环境信息)
   - [一次部署过程](#一次部署过程)
+  - [分发本土化（中文）](#分发本土化中文)
+    - [安装中文版 man 帮助信息](#安装中文版-man-帮助信息)
+    - [修改系统语言为中文](#修改系统语言为中文)
   - [WSL 常用命令](#wsl-常用命令)
     - [查看](#查看)
     - [安装](#安装)
@@ -11,9 +14,6 @@
     - [切换版本](#切换版本)
     - [旧版 Windows 系统升级 WSL2 方法](#旧版-windows-系统升级-wsl2-方法)
     - [可用发行版](#可用发行版)
-  - [分发本土化（中文）](#分发本土化中文)
-    - [安装中文版 man 帮助信息](#安装中文版-man-帮助信息)
-    - [修改系统语言为中文](#修改系统语言为中文)
   - [参考](#参考)
 
 ## WSL 2 系统要求
@@ -49,19 +49,79 @@
 1. 系统语言本土化 可选
    - [分发本土化（中文）](#分发本土化中文)
 
+## 分发本土化（中文）
+
+### 安装中文版 man 帮助信息
+
+```bash
+> sudo apt install manpages-zh -y
+```
+
+### 修改系统语言为中文
+
+- 查看当前系统设置的语言：locale
+- 查看当前系统支持的语言：locale -a
+
+生成语言环境：
+
+```bash
+> sudo locale-gen zh_CN.UTF-8
+```
+
+设置语言：
+
+```bash
+> sudo update-locale LANG=zh_CN.UTF-8
+```
+
+重启wsl：
+
+- 最简单的又能让语言生效的方法是在一个新的窗口中运行 wsl
+- 以下三种方法随便运行一条即可 管理员身份运行
+
+```bash
+> wsl -t <发行版名称> # 停止发行版  (PowerShell)
+> net stop LxssManager && net start LxssManager # 重启服务    (cmd)
+> Restart-Service LxssManager # 重启服务    (PowerShell)
+```
+
+测试日期是否显示为中文格式：
+
+```bash
+> date
+```
+
+如上述方法不起作用请尝试以下操作：
+
+- 另外需要注意您的 `~/.profile`、`~/.bashrc`、`~/.bash_profile` 配置文件中是否设置了语言相关命令
+
+```bash
+> sudo dpkg-reconfigure locales
+> sudo locale-gen zh_CN
+> sudo locale-gen zh_CN.UTF-8
+> sudo update-locale LANG="zh_CN.UTF-8" LANGUAGE="zh_CN"  # 设置完后记得重启wsl
+```
+
 ## WSL 常用命令
 
 ### 查看
 
+查看所有发行版详细情况：
+
 ```powershell
-# 查看所有发行版详细情况
-wsl -l -v
+> wsl -l -v
+```
 
-# 列出当前可用发行版
-wsl -l -o
+列出当前可用发行版：
 
-# 查看当前正在运行的发行版
-wsl --list --running
+```powershell
+> wsl -l -o
+```
+
+查看当前正在运行的发行版：
+
+```powershell
+> wsl --list --running
 ```
 
 ### 安装
@@ -69,71 +129,111 @@ wsl --list --running
 - 设置默认安装版本 建议运行一次 当然你要符合使用 [WSL 2 系统要求](#wsl-2-系统要求)
   - wsl --set-default-version 2
 
+默认安装：
+
 ```powershell
-# 默认安装的是 Ubuntu 20.04 LTS & WSL 1.0 建议先设定 WSL 默认版本为 2.0
-wsl --install
+> wsl --install
+```
 
-# 安装指定版本
-wsl --install -d <发行版名字>
-wsl --install -d Ubuntu
-wsl --install -d Ubuntu-20.04 2
+>默认安装的是WSL1.0的 Ubuntu 20.04 LTS  建议先设定 WSL 默认版本为 2.0
 
-# 导出发行版到 tar 文件
-wsl --export <自定义发行版名称> <导出路径>
-wsl Ubuntu_2022 D:\ubuntu20.04.tar
+ 安装指定版本：
 
-# 导入分发
-wsl --import <自定义发行版名称> <安装路径> <导入文件路径>
-wsl Ubuntu_2022 D:\OS\Ubuntu D:\linux\Ubuntu.tar
+```powershell
+
+> wsl --install -d <发行版名字>
+> wsl --install -d Ubuntu
+> wsl --install -d Ubuntu-20.04 2
+```
+
+导出发行版到 tar 文件：
+
+```powershell
+> wsl --export <自定义发行版名称> <导出路径>
+> wsl Ubuntu_2022 D:\ubuntu20.04.tar
+```
+
+导入分发：
+
+```powershell
+> wsl --import <自定义发行版名称> <安装路径> <导入文件路径>
+> wsl Ubuntu_2022 D:\OS\Ubuntu D:\linux\Ubuntu.tar
 ```
 
 >自定义发行版名称 建议不要写成 Ubuntu 避免和原发行版名称冲突
 
 ### 运行、停止、删除
 
+运行默认发行版
+
 ```powershell
-# 运行指定发行版
-wsl -d <发行版名称>
+> wsl
+```
 
-# 停止指定的发行版
-wsl -t <发行版名称>
-# 停止所有正在运行的发行版
-wsl --shutdown
+运行指定发行版：
 
-# 从系统中删除发行版
-wsl --unregister <发行版名称>
+```powershell
+> wsl -d <发行版名称>
+```
 
+停止指定的发行版：
+
+```powershell
+> wsl -t <发行版名称>
+```
+
+停止所有正在运行的发行版：
+
+```powershell
+> wsl --shutdown
+```
+
+从系统中删除发行版：
+
+```powershell
+> wsl --unregister <发行版名称>
 ```
 
 ### 切换版本
 
 - 首先输入命令查看当前版本 `wsl -l -v`，如果 `VERSION` 输出为 `1` 则输入 `wsl --set-version <发行版名字> 2` 把当前发行版切换到 `wsl 2.0` 内核，等待几分钟即可
 
+把现有的版本切换到其他版本：
+
 ```powershell
-# 把现有的版本切换到其他版本
-wsl --set-version <发行版名字> <wsl版本>
-wsl --set-version Ubuntu-20.04 2
+> wsl --set-version <发行版名字> <wsl版本>
+> wsl --set-version Ubuntu-20.04 2
 ```
 
 ### 旧版 Windows 系统升级 WSL2 方法
 
 - 以管理员身份打开 PowerShell 并运行
 
+1.启动 linux 子系统功能
+
 ```powershell
-# 1.启动 linux 子系统功能
-dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-
-# 2.启用 hyper-v 虚拟机
-dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-
-# 3.安装 WSL2 linux 内核 根据自己系统类型下载并安装
-# 查看系统类型
-systeminfo | find "系统类型"
-# X86    系统类型: x64-based PC
-https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
-# arm64
-https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_arm64.msi
+> dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 ```
+
+2.启用 hyper-v 虚拟机
+
+```powershell
+> dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+3.安装 WSL2 linux 内核 根据自己系统类型下载并安装
+
+- 查看系统类型：
+
+  ```powershell
+  > systeminfo | find "系统类型"
+  ```
+
+- X86 ：
+  - <https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi>
+
+- arm64：
+  - <https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_arm64.msi>
 
 ### 可用发行版
 
@@ -148,46 +248,6 @@ Ubuntu          Ubuntu
 Ubuntu-16.04    Ubuntu 16.04 LTS
 Ubuntu-18.04    Ubuntu 18.04 LTS
 Ubuntu-20.04    Ubuntu 20.04 LTS
-```
-
-
-## 分发本土化（中文）
-
-### 安装中文版 man 帮助信息
-
-```bash
-sudo apt install manpages-zh -y
-```
-
-### 修改系统语言为中文
-
-- 查看当前系统设置的语言：locale
-- 查看当前系统支持的语言：locale -a
-
-```bash
-# 生成语言环境
-sudo locale-gen zh_CN.UTF-8
-
-# 设置语言
-sudo update-locale LANG=zh_CN.UTF-8
-
-# 重启wsl
-# 最简单的又能让语言生效的方法是在一个新的窗口中运行 wsl
-# 以下三种方法随便运行一条即可 管理员身份运行
-wsl -t <发行版名称> # 停止发行版  (PowerShell)
-net stop LxssManager && net start LxssManager # 重启服务    (cmd)
-Restart-Service LxssManager # 重启服务    (PowerShell)
-
-# 测试日期是否显示为中文格式
-date
-
-# 如上述方法不起作用请尝试以下操作
-# 另外需要注意你的 ~/.profile ~/.bashrc ~/.bash_profile 中是否设置了语言
-sudo dpkg-reconfigure locales
-sudo locale-gen zh_CN
-sudo locale-gen zh_CN.UTF-8
-sudo update-locale LANG="zh_CN.UTF-8" LANGUAGE="zh_CN"  # 设置完后记得重启wsl
-
 ```
 
 ## 参考
